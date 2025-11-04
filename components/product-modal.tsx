@@ -26,13 +26,15 @@ export function ProductModal({ product, isOpen, onClose, onAddToCart }: ProductM
     const fetchDolarCripto = async () => {
       try {
         setLoading(true)
-        const response = await fetch("https://dolarapi.com/v1/dolares/cripto")
+        const response = await fetch("https://criptoya.com/api/dolar")
         const data = await response.json()
-        setDolarCripto(data.venta)
+        // Usar el precio de venta del dólar cripto
+        const rate = data.cripto?.ask || 1507.43
+        setDolarCripto(rate)
       } catch (error) {
         console.error("[v0] Error fetching dolar cripto:", error)
         // Valor por defecto si falla la API
-        setDolarCripto(1150)
+        setDolarCripto(1507.43)
       } finally {
         setLoading(false)
       }
@@ -55,7 +57,11 @@ export function ProductModal({ product, isOpen, onClose, onAddToCart }: ProductM
   const totalARS = dolarCripto ? totalUSD * dolarCripto : 0
 
   const handleAddToCart = () => {
-    onAddToCart(product, selectedQuantity)
+    const productWithPrice = {
+      ...product,
+      priceUSD: selectedPrice,
+    }
+    onAddToCart(productWithPrice, selectedQuantity)
     onClose()
   }
 

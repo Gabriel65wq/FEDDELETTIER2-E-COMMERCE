@@ -14,6 +14,7 @@ export interface Product {
   description: string
   details: string[]
   pricesByQuantity: PriceByQuantity[]
+  priceUSD?: number
 }
 
 export const products: Product[] = [

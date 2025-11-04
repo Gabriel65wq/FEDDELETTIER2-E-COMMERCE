@@ -1,0 +1,382 @@
+"use client"
+
+import type React from "react"
+
+import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Textarea } from "@/components/ui/textarea"
+import { ChevronLeft, AlertCircle } from "lucide-react"
+import type { CartItem } from "@/components/cart-sheet"
+import { PaymentInvoice } from "@/components/payment-invoice"
+
+interface CheckoutFormProps {
+  items: CartItem[]
+  totalUSD: number
+  onBack: () => void
+}
+
+export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
+  const [cryptoRate, setCryptoRate] = useState<number>(0)
+  const [deliveryMethod, setDeliveryMethod] = useState<"retiro" | "cargo">("retiro")
+  const [pickupDate, setPickupDate] = useState("")
+  const [pickupTime, setPickupTime] = useState("")
+  const [showPayment, setShowPayment] = useState(false)
+
+  const [dateError, setDateError] = useState("")
+  const [timeError, setTimeError] = useState("")
+  const [formData, setFormData] = useState({
+    name: "",
+    dni: "",
+    email: "",
+    phone: "",
+    address: "",
+    number: "",
+    floor: "",
+    locality: "",
+    province: "",
+    postal: "",
+    instructions: "",
+  })
+
+  useEffect(() => {
+    const fetchCryptoRate = async () => {
+      try {
+        const response = await fetch("https://criptoya.com/api/dolar")
+        const data = await response.json()
+        const rate = data.cripto?.ask || 1507.43
+        setCryptoRate(rate)
+      } catch (error) {
+        console.error("[v0] Error fetching crypto rate:", error)
+        setCryptoRate(1507.43)
+      }
+    }
+
+    fetchCryptoRate()
+  }, [])
+
+  const validateDate = (date: string) => {
+    if (!date) {
+      setDateError("")
+      return false
+    }
+
+    const selectedDate = new Date(date)
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    if (selectedDate < today) {
+      setDateError("Debe colocar una fecha correcta (desde hoy en adelante)")
+      return false
+    }
+
+    setDateError("")
+    return true
+  }
+
+  const validateTime = (time: string) => {
+    if (!time) {
+      setTimeError("")
+      return false
+    }
+
+    const [hours, minutes] = time.split(":").map(Number)
+
+    if (hours < 9 || hours >= 17) {
+      setTimeError("El horario debe ser entre 9 AM y 5 PM")
+      return false
+    }
+
+    setTimeError("")
+    return true
+  }
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const date = e.target.value
+    setPickupDate(date)
+    validateDate(date)
+  }
+
+  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const time = e.target.value
+    setPickupTime(time)
+    validateTime(time)
+  }
+
+  const handleContinueToPayment = () => {
+    // Validar campos requeridos
+    if (!formData.name || !formData.dni || !formData.email || !formData.phone) {
+      alert("Por favor complete todos los campos de información personal")
+      return
+    }
+
+    // Validar fecha y horario para retiro en persona
+    if (deliveryMethod === "retiro") {
+      if (!pickupDate || !pickupTime) {
+        alert("Por favor seleccione fecha y horario de retiro")
+        return
+      }
+      if (!validateDate(pickupDate) || !validateTime(pickupTime)) {
+        return
+      }
+    }
+
+    // Validar domicilio para vía cargo
+    if (deliveryMethod === "cargo") {
+      if (!formData.address || !formData.number || !formData.locality || !formData.province || !formData.postal) {
+        alert("Por favor complete todos los campos de domicilio")
+        return
+      }
+    }
+
+    setShowPayment(true)
+  }
+
+  const totalARS = totalUSD * cryptoRate
+
+  if (showPayment) {
+    return (
+      <PaymentInvoice
+        items={items}
+        totalUSD={totalUSD}
+        totalARS={totalARS}
+        cryptoRate={cryptoRate}
+        deliveryMethod={deliveryMethod}
+        formData={formData}
+        pickupDate={pickupDate}
+        pickupTime={pickupTime}
+        onBack={() => setShowPayment(false)}
+      />
+    )
+  }
+
+  return (
+    <div className="flex flex-col h-full">
+      <div className="border-b pb-4 mb-6">
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon" onClick={onBack}>
+            <ChevronLeft className="h-5 w-5" />
+          </Button>
+          <h2 className="text-2xl font-bold">Resumen del Pedido</h2>
+        </div>
+      </div>
+
+      <div className="flex-1 overflow-y-auto">
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Columna izquierda: Resumen del pedido */}
+          <div className="space-y-6">
+            <div className="space-y-4">
+              <h3 className="font-semibold text-xl">Productos</h3>
+              <div className="space-y-3">
+                {items.map((item) => (
+                  <div key={item.product.id} className="flex justify-between text-sm border-b pb-2">
+                    <span className="flex-1">
+                      {item.product.name} x{item.quantity}
+                    </span>
+                    <span className="font-semibold">
+                      ${((item.product.priceUSD || 0) * item.quantity).toFixed(2)} USD
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="border-t pt-4 space-y-3 bg-muted p-4 rounded-lg">
+                <div className="flex justify-between font-semibold text-lg">
+                  <span>Total en USD:</span>
+                  <span className="text-accent">${totalUSD.toFixed(2)} USD</span>
+                </div>
+                <div className="flex justify-between text-sm text-muted-foreground">
+                  <span>Dólar Cripto (criptoya.com):</span>
+                  <span>${cryptoRate.toFixed(2)} ARS</span>
+                </div>
+                <div className="flex justify-between font-bold text-xl border-t pt-3">
+                  <span>Total en ARS:</span>
+                  <span className="text-accent">
+                    ${totalARS.toLocaleString("es-AR", { maximumFractionDigits: 0 })} ARS
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Columna derecha: Detalles del cliente */}
+          <div className="space-y-6">
+            {/* Método de entrega */}
+            <div className="space-y-3">
+              <Label className="text-base font-semibold">Método de Entrega</Label>
+              <RadioGroup
+                value={deliveryMethod}
+                onValueChange={(value) => setDeliveryMethod(value as "retiro" | "cargo")}
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="retiro" id="retiro" />
+                  <Label htmlFor="retiro" className="cursor-pointer">
+                    Retiro en Persona
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="cargo" id="cargo" />
+                  <Label htmlFor="cargo" className="cursor-pointer">
+                    Vía Cargo
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
+
+            {/* Información personal */}
+            <div className="space-y-3">
+              <h3 className="font-semibold text-lg">Información Personal</h3>
+              <div className="space-y-2">
+                <Label htmlFor="name">Nombre Completo</Label>
+                <Input
+                  id="name"
+                  placeholder="Juan Pérez"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="dni">DNI</Label>
+                <Input
+                  id="dni"
+                  placeholder="12345678"
+                  value={formData.dni}
+                  onChange={(e) => setFormData({ ...formData, dni: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Gmail</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="ejemplo@gmail.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="phone">Número de Teléfono</Label>
+                <Input
+                  id="phone"
+                  placeholder="+54 9 11 1234 5678"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                />
+              </div>
+            </div>
+
+            {deliveryMethod === "cargo" && (
+              <div className="space-y-3 border-t pt-4">
+                <h3 className="font-semibold text-lg">Datos de Domicilio</h3>
+                <div className="space-y-2">
+                  <Label htmlFor="address">Dirección</Label>
+                  <Input
+                    id="address"
+                    placeholder="Av. Corrientes"
+                    value={formData.address}
+                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="number">Altura</Label>
+                  <Input
+                    id="number"
+                    placeholder="1234"
+                    value={formData.number}
+                    onChange={(e) => setFormData({ ...formData, number: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="floor">Piso/Departamento</Label>
+                  <Input
+                    id="floor"
+                    placeholder="5° A"
+                    value={formData.floor}
+                    onChange={(e) => setFormData({ ...formData, floor: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="locality">Localidad</Label>
+                  <Input
+                    id="locality"
+                    placeholder="CABA"
+                    value={formData.locality}
+                    onChange={(e) => setFormData({ ...formData, locality: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="province">Provincia</Label>
+                  <Input
+                    id="province"
+                    placeholder="Buenos Aires"
+                    value={formData.province}
+                    onChange={(e) => setFormData({ ...formData, province: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="postal">Código Postal</Label>
+                  <Input
+                    id="postal"
+                    placeholder="1043"
+                    value={formData.postal}
+                    onChange={(e) => setFormData({ ...formData, postal: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="instructions">Instrucciones de Entrega</Label>
+                  <Textarea
+                    id="instructions"
+                    placeholder="Timbre 5A, portero eléctrico"
+                    value={formData.instructions}
+                    onChange={(e) => setFormData({ ...formData, instructions: e.target.value })}
+                  />
+                </div>
+              </div>
+            )}
+
+            {deliveryMethod === "retiro" && (
+              <div className="space-y-3 border-t pt-4">
+                <h3 className="font-semibold text-lg">Fecha y Horario de Retiro</h3>
+                <div className="space-y-2">
+                  <Label htmlFor="date">Fecha de Retiro</Label>
+                  <Input
+                    id="date"
+                    type="date"
+                    value={pickupDate}
+                    onChange={handleDateChange}
+                    min={new Date().toISOString().split("T")[0]}
+                  />
+                  {dateError && (
+                    <div className="flex items-center gap-2 text-destructive text-sm">
+                      <AlertCircle className="h-4 w-4" />
+                      <span>{dateError}</span>
+                    </div>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="time">Horario (9 AM - 5 PM)</Label>
+                  <Input id="time" type="time" min="09:00" max="17:00" value={pickupTime} onChange={handleTimeChange} />
+                  {timeError && (
+                    <div className="flex items-center gap-2 text-destructive text-sm">
+                      <AlertCircle className="h-4 w-4" />
+                      <span>{timeError}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Botón continuar al pago */}
+      <div className="border-t pt-4 mt-6">
+        <Button className="w-full" size="lg" onClick={handleContinueToPayment}>
+          Continuar al Pago
+        </Button>
+      </div>
+    </div>
+  )
+}

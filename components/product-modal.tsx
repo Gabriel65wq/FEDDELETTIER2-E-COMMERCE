@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { X } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import type { Product } from "@/lib/products-data"
 
@@ -19,28 +19,27 @@ export function ProductModal({ product, isOpen, onClose, onAddToCart }: ProductM
   const [selectedQuantity, setSelectedQuantity] = useState<number>(
     Number.parseInt(product.pricesByQuantity[0]?.quantity.replace(/[^\d]/g, "") || "1"),
   )
-  const [dolarBlue, setDolarBlue] = useState<number | null>(null)
+  const [dolarCripto, setDolarCripto] = useState<number | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Obtener cotización del dólar blue
-    const fetchDolarBlue = async () => {
+    const fetchDolarCripto = async () => {
       try {
         setLoading(true)
-        const response = await fetch("https://dolarapi.com/v1/dolares/blue")
+        const response = await fetch("https://dolarapi.com/v1/dolares/cripto")
         const data = await response.json()
-        setDolarBlue(data.venta)
+        setDolarCripto(data.venta)
       } catch (error) {
-        console.error("[v0] Error fetching dolar blue:", error)
+        console.error("[v0] Error fetching dolar cripto:", error)
         // Valor por defecto si falla la API
-        setDolarBlue(1200)
+        setDolarCripto(1150)
       } finally {
         setLoading(false)
       }
     }
 
     if (isOpen) {
-      fetchDolarBlue()
+      fetchDolarCripto()
       // Resetear selección al abrir
       setSelectedPrice(product.pricesByQuantity[0]?.priceUSD || 0)
       setSelectedQuantity(Number.parseInt(product.pricesByQuantity[0]?.quantity.replace(/[^\d]/g, "") || "1"))
@@ -53,7 +52,7 @@ export function ProductModal({ product, isOpen, onClose, onAddToCart }: ProductM
   }
 
   const totalUSD = selectedPrice * selectedQuantity
-  const totalARS = dolarBlue ? totalUSD * dolarBlue : 0
+  const totalARS = dolarCripto ? totalUSD * dolarCripto : 0
 
   const handleAddToCart = () => {
     onAddToCart(product, selectedQuantity)
@@ -62,35 +61,41 @@ export function ProductModal({ product, isOpen, onClose, onAddToCart }: ProductM
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-start justify-between pr-8">
-            <span className="text-xl">{product.name}</span>
-          </DialogTitle>
-          <Button variant="ghost" size="icon" className="absolute right-4 top-4 h-8 w-8" onClick={onClose}>
-            <X className="h-5 w-5" />
-          </Button>
-        </DialogHeader>
+      <DialogContent className="max-w-6xl max-h-[95vh] overflow-y-auto p-0">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute right-4 top-4 h-10 w-10 z-50 bg-background/80 backdrop-blur-sm"
+          onClick={onClose}
+        >
+          <X className="h-6 w-6" />
+        </Button>
 
-        <div className="grid md:grid-cols-2 gap-6 mt-4">
-          {/* Imagen del producto */}
-          <div className="aspect-square relative overflow-hidden rounded-lg bg-muted">
+        <div className="grid md:grid-cols-[2fr,3fr] gap-0">
+          {/* Imagen del producto - más grande y a la izquierda */}
+          <div className="relative overflow-hidden bg-muted min-h-[600px]">
             <img src={product.image || "/placeholder.svg"} alt={product.name} className="object-cover w-full h-full" />
           </div>
 
-          {/* Detalles del producto */}
-          <div className="flex flex-col gap-4">
+          {/* Contenido del producto - a la derecha */}
+          <div className="flex flex-col gap-6 p-8">
             <div>
-              <Badge variant="secondary" className="mb-3">
+              <h2 className="text-3xl font-bold mb-2">{product.name}</h2>
+              <Badge variant="secondary" className="text-sm">
                 {product.category}
               </Badge>
-              <h3 className="font-semibold text-lg mb-2">Descripción</h3>
-              <p className="text-muted-foreground text-sm">{product.description}</p>
             </div>
 
+            {/* Descripción */}
+            <div>
+              <h3 className="font-semibold text-lg mb-2">Descripción</h3>
+              <p className="text-muted-foreground">{product.description}</p>
+            </div>
+
+            {/* Detalles */}
             <div>
               <h3 className="font-semibold text-lg mb-2">Detalles</h3>
-              <ul className="list-disc list-inside space-y-1 text-muted-foreground text-sm">
+              <ul className="list-disc list-inside space-y-1 text-muted-foreground">
                 {product.details.map((detail, index) => (
                   <li key={index}>{detail}</li>
                 ))}
@@ -99,7 +104,7 @@ export function ProductModal({ product, isOpen, onClose, onAddToCart }: ProductM
 
             <div>
               <h3 className="font-semibold text-lg mb-3">Precios por Cantidad</h3>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-4 gap-2">
                 {product.pricesByQuantity.map((priceOption, index) => (
                   <Button
                     key={index}
@@ -120,29 +125,29 @@ export function ProductModal({ product, isOpen, onClose, onAddToCart }: ProductM
             </div>
 
             {/* Total */}
-            <div className="border-t pt-4 mt-auto">
-              <div className="bg-muted p-4 rounded-lg space-y-2">
-                <div className="flex justify-between text-sm">
+            <div className="border-t pt-6 mt-auto">
+              <div className="bg-muted p-6 rounded-lg space-y-3">
+                <div className="flex justify-between">
                   <span>Cantidad seleccionada:</span>
                   <span className="font-semibold">{selectedQuantity}x</span>
                 </div>
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between">
                   <span>Precio unitario:</span>
                   <span className="font-semibold">${selectedPrice.toFixed(2)} USD</span>
                 </div>
-                <div className="flex justify-between border-t pt-2">
+                <div className="flex justify-between border-t pt-3">
                   <span className="font-semibold">Subtotal USD:</span>
-                  <span className="font-bold">${totalUSD.toFixed(2)}</span>
+                  <span className="font-bold text-lg">${totalUSD.toFixed(2)}</span>
                 </div>
                 {loading ? (
                   <div className="text-sm text-muted-foreground text-center py-2">Cargando cotización...</div>
                 ) : (
                   <>
                     <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>Dólar Blue:</span>
-                      <span>${dolarBlue?.toFixed(2)}</span>
+                      <span>Dólar Cripto:</span>
+                      <span>${dolarCripto?.toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between text-lg font-bold border-t pt-2">
+                    <div className="flex justify-between text-xl font-bold border-t pt-3">
                       <span>Total ARS:</span>
                       <span className="text-accent">
                         ${totalARS.toLocaleString("es-AR", { maximumFractionDigits: 0 })}
@@ -152,7 +157,7 @@ export function ProductModal({ product, isOpen, onClose, onAddToCart }: ProductM
                 )}
               </div>
 
-              <Button className="w-full mt-4" size="lg" onClick={handleAddToCart}>
+              <Button className="w-full mt-6" size="lg" onClick={handleAddToCart}>
                 Agregar al Carrito
               </Button>
             </div>

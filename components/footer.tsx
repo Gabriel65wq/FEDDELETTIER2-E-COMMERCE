@@ -1,78 +1,87 @@
-import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react"
+import { MessageCircle, Instagram, Facebook } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function Footer() {
   return (
-    <footer className="bg-secondary/30 border-t">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12">
-          {/* Columna 1: Marca */}
-          <div>
-            <h3 className="text-xl font-bold mb-4">FEDELLETIER</h3>
-            <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-              Tu destino para moda exclusiva y de calidad. Estilo que trasciende tendencias.
+    <footer className="bg-muted/50 border-t">
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+          {/* Columna 1: FEDELETTIER */}
+          <div className="space-y-4">
+            <h3 className="font-bold text-lg">FEDELETTIER</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Importador directo de productos del momento. +1000 Clientes satisfechos.
             </p>
             <div className="flex gap-2">
-              <Button size="icon" variant="ghost" className="h-9 w-9">
-                <Facebook className="h-4 w-4" />
+              <Button variant="outline" size="icon" asChild>
+                <a href="#" target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="h-4 w-4 text-green-600" />
+                  <span className="sr-only">WhatsApp</span>
+                </a>
               </Button>
-              <Button size="icon" variant="ghost" className="h-9 w-9">
-                <Instagram className="h-4 w-4" />
+              <Button variant="outline" size="icon" asChild>
+                <a href="#" target="_blank" rel="noopener noreferrer">
+                  <Instagram className="h-4 w-4 text-pink-600" />
+                  <span className="sr-only">Instagram</span>
+                </a>
               </Button>
-              <Button size="icon" variant="ghost" className="h-9 w-9">
-                <Twitter className="h-4 w-4" />
+              <Button variant="outline" size="icon" asChild>
+                <a href="#" target="_blank" rel="noopener noreferrer">
+                  <Facebook className="h-4 w-4 text-blue-600" />
+                  <span className="sr-only">Facebook</span>
+                </a>
               </Button>
             </div>
           </div>
 
           {/* Columna 2: Enlaces Rápidos */}
-          <div>
-            <h4 className="font-semibold mb-4">Enlaces Rápidos</h4>
+          <div className="space-y-4">
+            <h3 className="font-bold text-lg">Enlaces Rápidos</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#inicio" className="text-muted-foreground hover:text-accent transition-colors">
+                <a href="#inicio" className="text-muted-foreground hover:text-foreground transition-colors">
                   Inicio
                 </a>
               </li>
               <li>
-                <a href="#productos" className="text-muted-foreground hover:text-accent transition-colors">
+                <a href="#productos" className="text-muted-foreground hover:text-foreground transition-colors">
                   Productos
                 </a>
               </li>
               <li>
-                <a href="#nosotros" className="text-muted-foreground hover:text-accent transition-colors">
-                  Nosotros
+                <a href="#informacion" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Información
                 </a>
               </li>
               <li>
-                <a href="#contacto" className="text-muted-foreground hover:text-accent transition-colors">
-                  Contacto
+                <a href="#referencias" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Referencias
                 </a>
               </li>
             </ul>
           </div>
 
           {/* Columna 3: Información */}
-          <div>
-            <h4 className="font-semibold mb-4">Información</h4>
+          <div className="space-y-4">
+            <h3 className="font-bold text-lg">Información</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="text-muted-foreground hover:text-accent transition-colors">
+                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
                   Política de Privacidad
                 </a>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-accent transition-colors">
+                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
                   Términos y Condiciones
                 </a>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-accent transition-colors">
+                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
                   Envíos y Devoluciones
                 </a>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-accent transition-colors">
+                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
                   Preguntas Frecuentes
                 </a>
               </li>
@@ -80,27 +89,24 @@ export function Footer() {
           </div>
 
           {/* Columna 4: Contacto */}
-          <div>
-            <h4 className="font-semibold mb-4">Contacto</h4>
-            <ul className="space-y-3 text-sm">
-              <li className="flex items-start gap-2">
-                <MapPin className="h-4 w-4 mt-0.5 text-muted-foreground flex-shrink-0" />
-                <span className="text-muted-foreground">Calle Principal 123, Ciudad</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                <span className="text-muted-foreground">+1 234 567 890</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Mail className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                <span className="text-muted-foreground">info@fedelletier.com</span>
-              </li>
-            </ul>
+          <div className="space-y-4">
+            <h3 className="font-bold text-lg">Contacto</h3>
+            <div className="space-y-2 text-sm text-muted-foreground">
+              <p>+54 9 11 2477 2377</p>
+              <p>+54 9 11 3638 2378</p>
+            </div>
+            <div className="border-t pt-4 mt-4">
+              <p className="text-sm text-muted-foreground">Diseñada por: Gabriel Diaz</p>
+              <p className="text-sm text-muted-foreground">Tel: +54 9 11 3429 5399</p>
+            </div>
           </div>
         </div>
 
-        <div className="border-t mt-12 pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} FEDELLETIER. Todos los derechos reservados.</p>
+        {/* Copyright */}
+        <div className="border-t pt-6">
+          <p className="text-center text-sm text-muted-foreground">
+            © 2025 Fede Lettier. Todos los derechos reservados.
+          </p>
         </div>
       </div>
     </footer>

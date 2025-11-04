@@ -5,29 +5,29 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { X, ChevronLeft } from "lucide-react"
 
-const mainReferences = ["/imagenes/referencias1.jpg", "/imagenes/referencias2.jpg", "/imagenes/referencias3.jpg"]
+const mainReferences = ["/imagenes/referencias1.JPG", "/imagenes/referencias2.JPG", "/imagenes/referencias3.JPG"]
 
 const allReferences = [
-  "/imagenes/referencias1.jpg",
-  "/imagenes/referencias2.jpg",
-  "/imagenes/referencias3.jpg",
-  "/imagenes/referencias4.jpg",
-  "/imagenes/referencias5.jpg",
-  "/imagenes/referencias6.jpg",
-  "/imagenes/referencias7.jpg",
-  "/imagenes/referencias8.jpg",
-  "/imagenes/referencias9.jpg",
-  "/imagenes/referencias10.jpg",
-  "/imagenes/referencias11.jpg",
-  "/imagenes/referencias12.jpg",
-  "/imagenes/referencias13.jpg",
-  "/imagenes/referencias14.jpg",
-  "/imagenes/referencias15.jpg",
-  "/imagenes/referencias16.jpg",
-  "/imagenes/referencias17.jpg",
-  "/imagenes/referencias18.jpg",
-  "/imagenes/referencias19.jpg",
-  "/imagenes/referencias20.jpg",
+  "/imagenes/referencias1.JPG",
+  "/imagenes/referencias2.JPG",
+  "/imagenes/referencias3.JPG",
+  "/imagenes/referencias4.JPG",
+  "/imagenes/referencias5.JPG",
+  "/imagenes/referencias6.JPG",
+  "/imagenes/referencias7.JPG",
+  "/imagenes/referencias8.JPG",
+  "/imagenes/referencias9.JPG",
+  "/imagenes/referencias10.JPG",
+  "/imagenes/referencias11.JPG",
+  "/imagenes/referencias12.JPG",
+  "/imagenes/referencias13.JPG",
+  "/imagenes/referencias14.JPG",
+  "/imagenes/referencias15.JPG",
+  "/imagenes/referencias16.JPG",
+  "/imagenes/referencias17.JPG",
+  "/imagenes/referencias18.JPG",
+  "/imagenes/referencias19.JPG",
+  "/imagenes/referencias20.JPG",
 ]
 
 export function ReferencesSection() {

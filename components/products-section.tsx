@@ -25,7 +25,7 @@ export function ProductsSection({ onAddToCart }: ProductsSectionProps) {
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">Nuestros Productos</h2>
 
-        {/* Filtros de categoría */}
+        {/* Filtros */}
         <div className="flex flex-wrap justify-center gap-2 mb-12">
           {categories.map((category) => (
             <Button
@@ -38,7 +38,7 @@ export function ProductsSection({ onAddToCart }: ProductsSectionProps) {
           ))}
         </div>
 
-        {/* Grid de productos */}
+        {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {filteredProducts.map((product) => (
             <Card
@@ -71,7 +71,6 @@ export function ProductsSection({ onAddToCart }: ProductsSectionProps) {
         )}
       </div>
 
-      {/* Modal de detalle del producto */}
       {selectedProduct && (
         <ProductModal
           product={selectedProduct}

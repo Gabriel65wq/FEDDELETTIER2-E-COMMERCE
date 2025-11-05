@@ -147,22 +147,24 @@ export function ProductsSection({ onAddToCart }: ProductsSectionProps) {
           {filteredProducts.map((product) => (
             <Card
               key={product.id}
-              className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+              className="overflow-hidden cursor-pointer border-0 shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900"
               onClick={() => setSelectedProduct(product)}
             >
               <CardContent className="p-0">
-                <div className="aspect-square relative overflow-hidden bg-muted">
+                <div className="aspect-square relative overflow-hidden bg-gray-50 dark:bg-gray-800">
                   <img
                     src={product.image || "/placeholder.svg"}
                     alt={product.name}
-                    className="object-cover w-full h-full hover:scale-105 transition-transform"
+                    className="object-cover w-full h-full transition-transform duration-500 hover:scale-110"
                   />
                 </div>
               </CardContent>
               <CardFooter className="flex flex-col items-start gap-2 p-4">
-                <h3 className="font-semibold text-lg line-clamp-2">{product.name}</h3>
-                <p className="text-muted-foreground text-sm">{product.subtitle}</p>
-                <Badge variant="secondary">{product.category}</Badge>
+                <h3 className="font-medium text-base line-clamp-2 text-gray-900 dark:text-gray-100">{product.name}</h3>
+                <p className="text-gray-500 dark:text-gray-400 text-xs">{product.subtitle}</p>
+                <Badge variant="secondary" className="text-xs">
+                  {product.category}
+                </Badge>
               </CardFooter>
             </Card>
           ))}

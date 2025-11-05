@@ -153,39 +153,44 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="border-b pb-4 mb-6">
-        <h2 className="text-2xl font-bold text-center">Resumen del Pedido</h2>
+      <div className="border-b border-blue-200 dark:border-blue-800 pb-4 mb-6">
+        <h2 className="text-2xl font-bold text-center bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+          Resumen del Pedido
+        </h2>
       </div>
 
       <div className="flex-1 overflow-y-auto">
         <div className="space-y-8 max-w-4xl mx-auto">
-          <div className="space-y-6">
-            <h3 className="font-semibold text-xl">Productos</h3>
+          <div className="space-y-6 p-6 bg-white dark:bg-gray-800/50 rounded-lg border border-blue-200 dark:border-blue-800 shadow-lg">
+            <h3 className="font-semibold text-xl text-blue-900 dark:text-blue-100">Productos</h3>
             <div className="space-y-3">
               {items.map((item) => (
-                <div key={item.product.id} className="flex justify-between text-sm border-b pb-2">
-                  <span className="flex-1">
+                <div
+                  key={item.product.id}
+                  className="flex justify-between text-sm border-b border-blue-100 dark:border-blue-900/50 pb-2"
+                >
+                  <span className="flex-1 text-foreground">
                     {item.product.name} x{item.quantity}
                   </span>
-                  <span className="font-semibold">
+                  <span className="font-semibold text-blue-600 dark:text-cyan-400">
                     ${((item.product.priceUSD || 0) * item.quantity).toFixed(2)} USD
                   </span>
                 </div>
               ))}
             </div>
 
-            <div className="border-t pt-4 space-y-3 bg-muted p-4 rounded-lg">
+            <div className="border-t border-blue-200 dark:border-blue-800 pt-4 space-y-3 bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-900/50 dark:to-cyan-900/50 p-4 rounded-lg">
               <div className="flex justify-between font-semibold text-lg">
-                <span>Total en USD:</span>
-                <span className="text-accent">${totalUSD.toFixed(2)} USD</span>
+                <span className="text-blue-900 dark:text-blue-100">Total en USD:</span>
+                <span className="text-blue-600 dark:text-cyan-400">${totalUSD.toFixed(2)} USD</span>
               </div>
               <div className="flex justify-between text-sm text-muted-foreground">
                 <span>Dólar Cripto (criptoya.com):</span>
                 <span>${cryptoRate.toFixed(2)} ARS</span>
               </div>
-              <div className="flex justify-between font-bold text-xl border-t pt-3">
-                <span>Total en ARS:</span>
-                <span className="text-accent">
+              <div className="flex justify-between font-bold text-xl border-t border-blue-300 dark:border-blue-700 pt-3">
+                <span className="text-blue-900 dark:text-blue-100">Total en ARS:</span>
+                <span className="text-blue-600 dark:text-cyan-400">
                   ${totalARS.toLocaleString("es-AR", { maximumFractionDigits: 0 })} ARS
                 </span>
               </div>
@@ -214,7 +219,7 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
           </div>
 
           <div className="space-y-3">
-            <h3 className="font-semibold text-lg">Información Personal</h3>
+            <h3 className="font-semibold text-lg text-blue-900 dark:text-blue-100">Información Personal</h3>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Nombre Completo</Label>
@@ -257,8 +262,8 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
           </div>
 
           {deliveryMethod === "cargo" && (
-            <div className="space-y-3 border-t pt-4">
-              <h3 className="font-semibold text-lg">Datos de Domicilio</h3>
+            <div className="space-y-3 border-t border-blue-200 dark:border-blue-800 pt-4">
+              <h3 className="font-semibold text-lg text-blue-900 dark:text-blue-100">Datos de Domicilio</h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="address">Dirección</Label>
@@ -328,8 +333,8 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
           )}
 
           {deliveryMethod === "retiro" && (
-            <div className="space-y-3 border-t pt-4">
-              <h3 className="font-semibold text-lg">Fecha y Horario de Retiro</h3>
+            <div className="space-y-3 border-t border-blue-200 dark:border-blue-800 pt-4">
+              <h3 className="font-semibold text-lg text-blue-900 dark:text-blue-100">Fecha y Horario de Retiro</h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="date">Fecha de Retiro</Label>
@@ -363,11 +368,20 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
         </div>
       </div>
 
-      <div className="border-t pt-4 mt-6 space-y-2">
-        <Button variant="outline" className="w-full bg-transparent" size="lg" onClick={onBack}>
+      <div className="border-t border-blue-200 dark:border-blue-800 pt-4 mt-6 space-y-2">
+        <Button
+          variant="outline"
+          className="w-full border-blue-300 dark:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/30 bg-transparent"
+          size="lg"
+          onClick={onBack}
+        >
           Volver al Carrito
         </Button>
-        <Button className="w-full" size="lg" onClick={handleContinueToPayment}>
+        <Button
+          className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white"
+          size="lg"
+          onClick={handleContinueToPayment}
+        >
           Continuar al Pago
         </Button>
       </div>

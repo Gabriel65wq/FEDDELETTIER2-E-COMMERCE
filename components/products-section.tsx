@@ -21,8 +21,35 @@ export function ProductsSection({ onAddToCart }: ProductsSectionProps) {
     selectedCategory === "Todos" ? products : products.filter((p) => p.category === selectedCategory)
 
   return (
-    <section id="productos" className="py-16 md:py-24 bg-muted/30">
+    <section id="productos" className="py-16 md:py-24 relative overflow-hidden">
       <style jsx>{`
+        #productos {
+          background: linear-gradient(
+            160deg,
+            rgba(0, 123, 255, 0.02) 0%,
+            rgba(0, 168, 255, 0.05) 50%,
+            rgba(0, 99, 255, 0.03) 100%
+          );
+        }
+
+        :global(.dark) #productos {
+          background: linear-gradient(
+            160deg,
+            rgba(61, 142, 255, 0.04) 0%,
+            rgba(0, 212, 255, 0.07) 50%,
+            rgba(61, 142, 255, 0.05) 100%
+          );
+        }
+
+        @keyframes infoFloat {
+          0%, 100% {
+            transform: translate(0, 0) rotate(0deg);
+          }
+          50% {
+            transform: translate(-3%, 3%) rotate(-3deg);
+          }
+        }
+
         @keyframes gradient-shift {
           0%, 100% {
             background-position: 0% 50%;
@@ -130,7 +157,14 @@ export function ProductsSection({ onAddToCart }: ProductsSectionProps) {
         }
       `}</style>
 
-      <div className="container mx-auto px-4">
+      {/* Fondo animado con ::before */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute -top-[20%] -left-[10%] w-[120%] h-[140%] animate-[infoFloat_18s_ease-in-out_infinite]">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(0,170,255,0.08),transparent_50%),radial-gradient(ellipse_at_70%_80%,rgba(0,123,255,0.06),transparent_50%)]" />
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col items-center mb-8">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-3 animated-gradient-text uppercase">
             Nuestros Productos

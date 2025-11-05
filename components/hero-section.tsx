@@ -6,8 +6,47 @@ import { MessageCircle, Instagram, Facebook } from "lucide-react"
 
 export function HeroSection() {
   return (
-    <section id="inicio" className="relative py-20 md:py-32 overflow-hidden">
+    <section
+      id="inicio"
+      className="relative py-20 md:py-32 overflow-hidden min-h-screen flex items-center justify-center"
+    >
       <style jsx>{`
+        #inicio {
+          background: linear-gradient(
+            160deg,
+            rgba(0, 123, 255, 0.02) 0%,
+            rgba(0, 168, 255, 0.05) 50%,
+            rgba(0, 99, 255, 0.03) 100%
+          );
+        }
+
+        :global(.dark) #inicio {
+          background: linear-gradient(
+            160deg,
+            rgba(61, 142, 255, 0.04) 0%,
+            rgba(0, 212, 255, 0.07) 50%,
+            rgba(61, 142, 255, 0.05) 100%
+          );
+        }
+
+        @keyframes infoFloat {
+          0%, 100% {
+            transform: translate(0, 0) rotate(0deg);
+          }
+          50% {
+            transform: translate(-3%, 3%) rotate(-3deg);
+          }
+        }
+
+        @keyframes particleFloat {
+          0%, 100% {
+            transform: translate(0, 0);
+          }
+          50% {
+            transform: translate(2%, -2%);
+          }
+        }
+
         @keyframes gradient-shift {
           0%, 100% {
             background-position: 0% 50%;
@@ -68,7 +107,6 @@ export function HeroSection() {
           animation: shimmer 2s infinite;
         }
 
-        /* Light theme: both buttons black with shimmer */
         .light-theme-button {
           background: linear-gradient(135deg, #1e293b, #334155);
           color: white;
@@ -79,7 +117,6 @@ export function HeroSection() {
           box-shadow: 0 10px 25px rgba(30, 41, 59, 0.3);
         }
 
-        /* Dark theme: both buttons blue with shimmer */
         .dark-theme-button {
           background: linear-gradient(135deg, #3b82f6, #06b6d4);
           color: white;
@@ -90,6 +127,16 @@ export function HeroSection() {
           box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
         }
       `}</style>
+
+      {/* Fondo animado con ::before */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 animate-[infoFloat_18s_ease-in-out_infinite]">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(0,170,255,0.08),transparent_50%),radial-gradient(ellipse_at_70%_80%,rgba(0,123,255,0.06),transparent_50%)]" />
+        </div>
+        <div className="absolute inset-0 animate-[particleFloat_15s_ease-in-out_infinite]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(0,123,255,0.15)_2px,transparent_2px),radial-gradient(circle_at_85%_80%,rgba(0,212,255,0.12)_3px,transparent_3px),radial-gradient(circle_at_45%_60%,rgba(0,123,255,0.1)_2px,transparent_2px),radial-gradient(circle_at_70%_30%,rgba(0,180,255,0.13)_2.5px,transparent_2.5px)] bg-[length:100%_100%]" />
+        </div>
+      </div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="mx-auto max-w-3xl text-center">

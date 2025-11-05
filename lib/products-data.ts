@@ -23,7 +23,7 @@ export const products: Product[] = [
     id: "apple1",
     name: "AirPods Pro 2da Gen",
     subtitle: "Desde $8.5 USD (hasta 500x)",
-    image: "/imagenes/apple1.JPG",
+    image: "/imagenes/apple1.jpg", // Cambiado de .JPG a .jpg
     category: "Accesorios Apple",
     description: "Auriculares inalámbricos con cancelación activa de ruido y calidad de sonido premium.",
     details: [
@@ -48,7 +48,7 @@ export const products: Product[] = [
     id: "apple2",
     name: "Cable + Cargador",
     subtitle: "Desde $3.2 USD (hasta 100x)",
-    image: "/imagenes/apple2.JPG",
+    image: "/imagenes/apple2.jpg", // Cambiado de .JPG a .jpg
     category: "Accesorios Apple",
     description: "Set de cable Lightning y cargador USB-C de 20W de Apple para carga rápida de dispositivos.",
     details: [
@@ -71,7 +71,7 @@ export const products: Product[] = [
     id: "apple3",
     name: "Cargadores Completos",
     subtitle: "Desde $3.2 USD (hasta 100x)",
-    image: "/imagenes/apple3.JPG",
+    image: "/imagenes/apple3.jpg", // Cambiado de .JPG a .jpg
     category: "Accesorios Apple",
     description: "Kit completo de cargador Apple con adaptador USB-C de 20W y cable USB-C a Lightning.",
     details: [
@@ -94,7 +94,7 @@ export const products: Product[] = [
     id: "apple4",
     name: "Battery Pack",
     subtitle: "Desde $8 USD (hasta 50x)",
-    image: "/imagenes/apple4.JPG",
+    image: "/imagenes/apple4.jpg", // Cambiado de .JPG a .jpg
     category: "Accesorios Apple",
     description: "Batería externa MagSafe oficial de Apple para iPhone, con diseño compacto y carga inalámbrica.",
     details: [
@@ -116,7 +116,7 @@ export const products: Product[] = [
     id: "apple5",
     name: "Funda Silicon Case I11 - 16Pro Max",
     subtitle: "Desde $1.3 USD (hasta 300x)",
-    image: "/imagenes/apple5.JPG",
+    image: "/imagenes/apple5.jpg", // Cambiado de .JPG a .jpg
     category: "Accesorios Apple",
     description: "Fundas de silicona premium para iPhone, desde el modelo 11 hasta el 16 Pro Max.",
     details: [
@@ -139,7 +139,7 @@ export const products: Product[] = [
     id: "apple6",
     name: "AirPods Max",
     subtitle: "Desde $13 USD (hasta 50x)",
-    image: "/imagenes/apple6.JPG",
+    image: "/imagenes/apple6.jpg", // Cambiado de .JPG a .jpg
     category: "Accesorios Apple",
     description: "Auriculares over-ear premium de Apple con cancelación activa de ruido y audio espacial.",
     details: [
@@ -163,7 +163,7 @@ export const products: Product[] = [
     id: "varios1",
     name: "Aspiradora Robot",
     subtitle: "Desde $16 USD",
-    image: "/imagenes/varios1.JPG",
+    image: "/imagenes/varios1.jpg", // Cambiado de .JPG a .jpg
     category: "Varios",
     description: "Aspiradora robot inteligente SWEEPOL con navegación avanzada y control automático. ¡LIQUIDACIÓN!",
     details: [
@@ -182,7 +182,7 @@ export const products: Product[] = [
     id: "varios2",
     name: "JBL GO3",
     subtitle: "Desde $8.5 USD (hasta 100x)",
-    image: "/imagenes/varios2.JPG",
+    image: "/imagenes/varios2.jpg", // Cambiado de .JPG a .jpg
     category: "Varios",
     description: "Altavoz portátil JBL GO4 con sonido potente y diseño compacto en varios colores.",
     details: [
@@ -205,7 +205,7 @@ export const products: Product[] = [
     id: "varios3",
     name: "Cremas Karsell Maca Power Collagen",
     subtitle: "Desde $9.3 USD (hasta 50x)",
-    image: "/imagenes/varios3.JPG",
+    image: "/imagenes/varios3.jpg", // Cambiado de .JPG a .jpg
     category: "Varios",
     description: "Crema capilar con maca y colágeno para hidratación profunda y fortalecimiento del cabello.",
     details: ["Hidratación profunda", "Fortalece el cabello", "Con colágeno", "Aroma agradable", "Fórmula nutritiva"],
@@ -215,7 +215,7 @@ export const products: Product[] = [
     id: "varios4",
     name: "TV BOX 8K (32GB + 128GB)",
     subtitle: "Desde $17 USD (hasta 40x)",
-    image: "/imagenes/varios4.JPG",
+    image: "/imagenes/varios4.jpg", // Cambiado de .JPG a .jpg
     category: "Varios",
     description: "TV Box con resolución 8K y gran almacenamiento para entretenimiento completo.",
     details: ["Resolución 8K", "32GB RAM + 128GB ROM", "Android TV", "WiFi 6", "Múltiples apps de streaming"],
@@ -225,7 +225,7 @@ export const products: Product[] = [
     id: "varios5",
     name: "Proyector con Juegos 2 en 1",
     subtitle: "Desde $52 USD (hasta 40x)",
-    image: "/imagenes/varios5.JPG",
+    image: "/imagenes/varios5.jpg", // Cambiado de .JPG a .jpg
     category: "Varios",
     description: "Proyector portátil con juegos integrados para entretenimiento completo.",
     details: ["Proyección HD", "Juegos retro incluidos", "Portátil", "Batería recargable", "Múltiples entradas"],
@@ -237,7 +237,7 @@ export const products: Product[] = [
     id: "vapes1",
     name: "Torch 7.5G",
     subtitle: "Desde $27 USD (hasta 100x)",
-    image: "/imagenes/vapes1.JPG",
+    image: "/imagenes/vapes1.jpg", // Cambiado de .JPG a .jpg
     category: "Vapes",
     description: "Vape desechable con sabores premium y diseño elegante en varios colores.",
     details: [
@@ -259,7 +259,7 @@ export const products: Product[] = [
     id: "vapes2",
     name: "ElfThc 5g Edición Limitada",
     subtitle: "Desde $21.5 USD (hasta 100x)",
-    image: "/imagenes/vapes2.JPG",
+    image: "/imagenes/vapes2.jpg", // Cambiado de .JPG a .jpg
     category: "Vapes",
     description: "Vape desechable premium con 5g de contenido, edición limitada con efectos especiales.",
     details: [
@@ -282,7 +282,7 @@ export const products: Product[] = [
     id: "vapes3",
     name: "ElfThc 3000mg Edición Limitada",
     subtitle: "Desde $16 USD (hasta 100x)",
-    image: "/imagenes/vapes3.JPG",
+    image: "/imagenes/vapes3.jpg", // Cambiado de .JPG a .jpg
     category: "Vapes",
     description: "Vape desechable con 3000mg de contenido activo, edición limitada con fórmula especial.",
     details: [
@@ -305,7 +305,7 @@ export const products: Product[] = [
     id: "vapes4",
     name: "Elfbar 40K Puff",
     subtitle: "Desde $11.75 USD (hasta 100x)",
-    image: "/imagenes/vapes4.JPG",
+    image: "/imagenes/vapes4.jpg", // Cambiado de .JPG a .jpg
     category: "Vapes",
     description: "Vape desechable Sour King con hasta 40.000 inhalaciones y sabores intensos.",
     details: [
@@ -327,7 +327,7 @@ export const products: Product[] = [
     id: "vapes5",
     name: "Ignite V400 40mil",
     subtitle: "Desde $13.8 USD (hasta 50x)",
-    image: "/imagenes/vapes5.JPG",
+    image: "/imagenes/vapes5.jpg", // Cambiado de .JPG a .jpg
     category: "Vapes",
     description: "Vape desechable premium con 40.000 inhalaciones y tecnología V400 avanzada.",
     details: [
@@ -350,7 +350,7 @@ export const products: Product[] = [
     id: "vapes6",
     name: "Lost Mary Mixer 30.000 Puffs",
     subtitle: "Desde $11.4 USD (hasta 100x)",
-    image: "/imagenes/vapes6.JPG",
+    image: "/imagenes/vapes6.jpg", // Cambiado de .JPG a .jpg
     category: "Vapes",
     description: "Vape desechable con sistema de mezcla de sabores dobles y hasta 30.000 inhalaciones.",
     details: [
@@ -373,7 +373,7 @@ export const products: Product[] = [
     id: "vapes7",
     name: "IGNITE V250 25.000 Puffs",
     subtitle: "Desde $11.4 USD (hasta 100x)",
-    image: "/imagenes/vapes7.JPG",
+    image: "/imagenes/vapes7.jpg", // Cambiado de .JPG a .jpg
     category: "Vapes",
     description: "Vape desechable premium con diseño holográfico y 25.000 inhalaciones.",
     details: [
@@ -396,7 +396,7 @@ export const products: Product[] = [
     id: "vapes8",
     name: "IGNITE V150 15.000 Puffs",
     subtitle: "Desde $8.8 USD (hasta 100x)",
-    image: "/imagenes/vapes8.JPG",
+    image: "/imagenes/vapes8.jpg", // Cambiado de .JPG a .jpg
     category: "Vapes",
     description: "Vape compacto con diseño holográfico y 15.000 inhalaciones en sabores refrescantes.",
     details: [
@@ -421,7 +421,7 @@ export const products: Product[] = [
     id: "perfumes1",
     name: "AL HARAMAIN AMBER OUD GOLD EDITION EDP 100ml",
     subtitle: "Desde $59.5 USD (hasta 20x)",
-    image: "/imagenes/perfumes1.JPG",
+    image: "/imagenes/perfumes1.jpg", // Cambiado de .JPG a .jpg
     category: "Perfumes",
     description: "Perfume premium árabe con notas de ámbar y oud, presentación de lujo en caja dorada.",
     details: [
@@ -442,7 +442,7 @@ export const products: Product[] = [
     id: "perfumes2",
     name: "BHARARA KING EDP 150ml",
     subtitle: "Desde $65.5 USD (hasta 20x)",
-    image: "/imagenes/perfumes2.JPG",
+    image: "/imagenes/perfumes2.jpg", // Cambiado de .JPG a .jpg
     category: "Perfumes",
     description: "Fragancia masculina de lujo con 150ml de contenido, diseño elegante y sofisticado.",
     details: [
@@ -463,7 +463,7 @@ export const products: Product[] = [
     id: "perfumes3",
     name: "LATTAFA FAKHAR DORADO EDP 100ml",
     subtitle: "Desde $33.5 USD (hasta 20x)",
-    image: "/imagenes/perfumes3.JPG",
+    image: "/imagenes/perfumes3.jpg", // Cambiado de .JPG a .jpg
     category: "Perfumes",
     description: "Perfume árabe con diseño dorado ornamentado, fragancia oriental de lujo.",
     details: [
@@ -484,7 +484,7 @@ export const products: Product[] = [
     id: "perfumes4",
     name: "ARMAF CLUB DE NUIT INTENSE MAN EDT 105ml",
     subtitle: "Desde $32.5 USD (hasta 20x)",
-    image: "/imagenes/perfumes4.JPG",
+    image: "/imagenes/perfumes4.jpg", // Cambiado de .JPG a .jpg
     category: "Perfumes",
     description: "Fragancia masculina intensa inspirada en los grandes clásicos, presentación elegante.",
     details: [
@@ -505,7 +505,7 @@ export const products: Product[] = [
     id: "perfumes5",
     name: "LATTAFA KHAMRAH EDP 100ml",
     subtitle: "Desde $39 USD (hasta 20x)",
-    image: "/imagenes/perfumes5.JPG",
+    image: "/imagenes/perfumes5.jpg", // Cambiado de .JPG a .jpg
     category: "Perfumes",
     description: "Perfume dulce y especiado con notas de canela, vainilla y ámbar, muy popular.",
     details: [
@@ -526,7 +526,7 @@ export const products: Product[] = [
     id: "perfumes6",
     name: "LATTAFA ASAD EDP 100ml",
     subtitle: "Desde $26.5 USD (hasta 20x)",
-    image: "/imagenes/perfumes6.JPG",
+    image: "/imagenes/perfumes6.jpg", // Cambiado de .JPG a .jpg
     category: "Perfumes",
     description: "Fragancia masculina potente con diseño de medallón dorado, notas orientales intensas.",
     details: [
@@ -547,7 +547,7 @@ export const products: Product[] = [
     id: "perfumes7",
     name: "LATTAFA BADE'E AL OUD SUBLIME 100ml",
     subtitle: "Desde $26.5 USD (hasta 20x)",
-    image: "/imagenes/perfumes7.JPG",
+    image: "/imagenes/perfumes7.jpg", // Cambiado de .JPG a .jpg
     category: "Perfumes",
     description: "Perfume árabe tradicional con oud sublime, presentación lujosa en caja roja.",
     details: [
@@ -568,7 +568,7 @@ export const products: Product[] = [
     id: "perfumes8",
     name: "LATTAFA YARA PINK EDP 100ml",
     subtitle: "Desde $33 USD (hasta 20x)",
-    image: "/imagenes/perfumes8.JPG",
+    image: "/imagenes/perfumes8.jpg", // Cambiado de .JPG a .jpg
     category: "Perfumes",
     description: "Fragancia femenina dulce y floral en elegante presentación rosa, muy popular.",
     details: [
@@ -589,7 +589,7 @@ export const products: Product[] = [
     id: "perfumes9",
     name: "LATTAFA YARA CANDY EDP 100ml",
     subtitle: "Desde $25.5 USD (hasta 20x)",
-    image: "/imagenes/perfumes9.JPG",
+    image: "/imagenes/perfumes9.jpg", // Cambiado de .JPG a .jpg
     category: "Perfumes",
     description: "Versión dulce de Yara con notas gourmand, perfecta para quienes aman las fragancias dulces.",
     details: [
@@ -610,7 +610,7 @@ export const products: Product[] = [
     id: "perfumes10",
     name: "LATTAFA YARA MOI EDP 100ml",
     subtitle: "Desde $26 USD (hasta 20x)",
-    image: "/imagenes/perfumes10.JPG",
+    image: "/imagenes/perfumes10.jpg", // Cambiado de .JPG a .jpg
     category: "Perfumes",
     description: "Otra variación de la popular línea Yara, con notas florales y frutales equilibradas.",
     details: [
@@ -631,7 +631,7 @@ export const products: Product[] = [
     id: "perfumes11",
     name: "LATTAFA BADEE AL OUD NOBLE BLUSH EDP 100ml",
     subtitle: "Desde $28.5 USD (hasta 20x)",
-    image: "/imagenes/perfumes11.JPG",
+    image: "/imagenes/perfumes11.jpg", // Cambiado de .JPG a .jpg
     category: "Perfumes",
     description: "Perfume árabe con oud noble y notas florales, fragancia sofisticada y elegante.",
     details: [
@@ -652,7 +652,7 @@ export const products: Product[] = [
     id: "perfumes12",
     name: "LATTAFA FAKHAR ROSE EDP 100ml",
     subtitle: "Desde $33 USD (hasta 20x)",
-    image: "/imagenes/perfumes12.JPG",
+    image: "/imagenes/perfumes12.jpg", // Cambiado de .JPG a .jpg
     category: "Perfumes",
     description: "Versión rosa de Fakhar con notas florales predominantes, elegancia en estado puro.",
     details: [

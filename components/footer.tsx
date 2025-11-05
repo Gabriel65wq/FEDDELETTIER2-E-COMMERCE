@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 
 export function Footer() {
   return (
-    <footer className="bg-muted/50 border-t">
+    <footer className="bg-[#1b2530] dark:bg-[#1b2530] text-[#d1d5db] border-t border-[#2e3a47]">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Columna 1: FEDELETTIER */}

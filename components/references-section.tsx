@@ -200,34 +200,36 @@ export function ReferencesSection() {
       </section>
 
       {showGallery && (
-        <div className="fixed inset-0 bg-white dark:bg-black z-[9999] overflow-y-auto">
-          <div className="w-[90%] max-w-[1200px] mx-auto py-10 relative z-[10000]">
-            <div className="flex items-center justify-between mb-10">
-              <Button
-                onClick={() => setShowGallery(false)}
-                className="blue-button shimmer-button hover:scale-105 transition-transform px-6 py-3 rounded-lg font-semibold flex items-center gap-2"
-              >
-                <ChevronLeft className="h-5 w-5" />
-                Volver
-              </Button>
-              <h2 className="text-2xl font-bold text-foreground">Galería de Referencias</h2>
-              <div className="w-[100px]"></div>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {allReferences.map((image, index) => (
-                <div
-                  key={index}
-                  className="aspect-square relative overflow-hidden rounded-xl bg-muted cursor-pointer"
-                  onClick={() => setSelectedImage(image)}
+        <div className="fixed inset-0 bg-white dark:bg-black z-[9999] overflow-hidden">
+          <div className="w-full h-full overflow-y-auto">
+            <div className="w-[90%] max-w-[1200px] mx-auto py-10">
+              <div className="flex items-center justify-between mb-10">
+                <Button
+                  onClick={() => setShowGallery(false)}
+                  className="blue-button shimmer-button hover:scale-105 transition-transform px-6 py-3 rounded-lg font-semibold flex items-center gap-2"
                 >
-                  <img
-                    src={image || "/placeholder.svg"}
-                    alt={`Referencia ${index + 1}`}
-                    className="object-cover w-full h-full hover:scale-110 transition-transform duration-300 hover:shadow-[0_0_20px_rgba(0,170,255,0.5)]"
-                  />
-                </div>
-              ))}
+                  <ChevronLeft className="h-5 w-5" />
+                  Volver
+                </Button>
+                <h2 className="text-2xl font-bold text-foreground">Galería de Referencias</h2>
+                <div className="w-[100px]"></div>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {allReferences.map((image, index) => (
+                  <div
+                    key={index}
+                    className="aspect-square relative overflow-hidden rounded-xl bg-muted cursor-pointer"
+                    onClick={() => setSelectedImage(image)}
+                  >
+                    <img
+                      src={image || "/placeholder.svg"}
+                      alt={`Referencia ${index + 1}`}
+                      className="object-cover w-full h-full hover:scale-110 transition-transform duration-300 hover:shadow-[0_0_20px_rgba(0,170,255,0.5)]"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

@@ -47,41 +47,50 @@ export function PaymentInvoice({
   )
   const [isProcessing, setIsProcessing] = useState(false)
   const [paymentSuccess, setPaymentSuccess] = useState(false)
-  const [mercadoPagoLink, setMercadoPagoLink] = useState<string | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const handlePayment = async () => {
     setIsProcessing(true)
+    setErrorMessage(null)
 
     try {
+      console.log("[v0] Starting payment process...")
+
       if (paymentMethod === "efectivo") {
-        // Simular procesamiento de pago en efectivo
-        await new Promise((resolve) => setTimeout(resolve, 1500))
+        console.log("[v0] Processing cash payment...")
+        const orderSaved = await saveOrderToSupabase("efectivo", "completed")
 
-        // Guardar pedido en Supabase
-        await saveOrderToSupabase("efectivo", "completed")
-
-        setPaymentSuccess(true)
+        if (orderSaved) {
+          setPaymentSuccess(true)
+        } else {
+          throw new Error("Error al guardar el pedido")
+        }
       } else {
-        // Crear preferencia de pago en Mercado Pago
+        console.log("[v0] Creating MercadoPago preference...")
         const preference = await createMercadoPagoPreference()
 
         if (preference && preference.init_point) {
-          setMercadoPagoLink(preference.init_point)
-          // Abrir link de Mercado Pago
-          window.open(preference.init_point, "_blank")
+          console.log("[v0] MercadoPago preference created:", preference.init_point)
 
-          // Simular verificación de pago (en producción, usar webhooks)
-          await new Promise((resolve) => setTimeout(resolve, 3000))
+          // Guardar pedido en Supabase con estado pending
+          const orderSaved = await saveOrderToSupabase("mercadopago", "pending")
 
-          // Guardar pedido en Supabase
-          await saveOrderToSupabase("mercadopago", "pending")
-
-          setPaymentSuccess(true)
+          if (orderSaved) {
+            // Abrir link de Mercado Pago en nueva pestaña
+            window.open(preference.init_point, "_blank")
+            setPaymentSuccess(true)
+          } else {
+            throw new Error("Error al guardar el pedido")
+          }
+        } else {
+          throw new Error("Error al crear la preferencia de pago")
         }
       }
     } catch (error) {
       console.error("[v0] Error processing payment:", error)
-      alert("Error al procesar el pago. Por favor intente nuevamente.")
+      setErrorMessage(
+        error instanceof Error ? error.message : "Error al procesar el pago. Por favor intente nuevamente.",
+      )
     } finally {
       setIsProcessing(false)
     }
@@ -115,6 +124,8 @@ export function PaymentInvoice({
       })
 
       if (!response.ok) {
+        const errorData = await response.json()
+        console.error("[v0] Error response from MercadoPago API:", errorData)
         throw new Error("Error creating preference")
       }
 
@@ -127,6 +138,8 @@ export function PaymentInvoice({
 
   const saveOrderToSupabase = async (paymentMethod: string, status: string) => {
     try {
+      console.log("[v0] Saving order to Supabase...")
+
       const response = await fetch("/api/orders/create", {
         method: "POST",
         headers: {
@@ -160,12 +173,17 @@ export function PaymentInvoice({
       })
 
       if (!response.ok) {
+        const errorData = await response.json()
+        console.error("[v0] Error response from orders API:", errorData)
         throw new Error("Error saving order")
       }
 
-      return await response.json()
+      const result = await response.json()
+      console.log("[v0] Order saved successfully:", result)
+      return true
     } catch (error) {
       console.error("[v0] Error saving order to Supabase:", error)
+      return false
     }
   }
 
@@ -181,7 +199,7 @@ export function PaymentInvoice({
         <p className="text-center text-muted-foreground max-w-md">
           {paymentMethod === "efectivo"
             ? "Tu pedido ha sido registrado exitosamente. Recuerda llevar el efectivo al momento del retiro."
-            : "Tu pago ha sido procesado exitosamente. Recibirás un correo con los detalles de tu pedido."}
+            : "Tu pedido ha sido registrado. Completa el pago en Mercado Pago para confirmar tu compra."}
         </p>
         <Button size="lg" onClick={() => window.location.reload()} className="blue-button shimmer-button">
           Volver al Inicio
@@ -202,6 +220,12 @@ export function PaymentInvoice({
           </h2>
         </div>
       </div>
+
+      {errorMessage && (
+        <div className="mb-4 p-4 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-800 rounded-lg text-red-800 dark:text-red-200">
+          {errorMessage}
+        </div>
+      )}
 
       <div className="flex-1 overflow-y-auto">
         <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">

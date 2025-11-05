@@ -146,11 +146,7 @@ export function HeroSection() {
 
             <Dialog>
               <DialogTrigger asChild>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="w-full sm:w-auto rounded-full shimmer-button blue-button border-0 bg-transparent"
-                >
+                <Button size="lg" className="w-full sm:w-auto rounded-full shimmer-button blue-button">
                   Redes Sociales
                 </Button>
               </DialogTrigger>

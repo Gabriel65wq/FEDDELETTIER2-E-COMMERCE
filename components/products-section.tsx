@@ -108,44 +108,6 @@ export function ProductsSection({ onAddToCart }: ProductsSectionProps) {
           border: none;
           margin: 0 auto;
         }
-
-        .shimmer-button {
-          position: relative;
-          overflow: hidden;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .shimmer-button:hover {
-          transform: translateY(-2px);
-        }
-
-        .shimmer-button::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.3),
-            transparent
-          );
-          background-size: 200% 100%;
-          animation: shimmer 2s infinite;
-        }
-
-        /* Botones azules para ambos themes */
-        .blue-button {
-          background: linear-gradient(135deg, #3b82f6, #06b6d4);
-          color: white;
-          border: none;
-        }
-
-        .blue-button:hover {
-          box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
-        }
       `}</style>
 
       {/* Fondo animado con ::before */}

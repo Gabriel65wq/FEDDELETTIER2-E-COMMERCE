@@ -377,11 +377,7 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
         >
           Volver al Carrito
         </Button>
-        <Button
-          className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white"
-          size="lg"
-          onClick={handleContinueToPayment}
-        >
+        <Button className="w-full blue-button shimmer-button" size="lg" onClick={handleContinueToPayment}>
           Continuar al Pago
         </Button>
       </div>

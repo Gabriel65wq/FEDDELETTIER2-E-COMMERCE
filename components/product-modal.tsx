@@ -177,8 +177,10 @@ export function ProductModal({ product, isOpen, onClose, onAddToCart }: ProductM
           }
 
           .add-to-cart-button {
-            background: linear-gradient(90deg, #007bff, #00a8ff, #00d4ff, #007bff);
+            background: linear-gradient(90deg, #007bff, #00a8ff, #00d4ff, #007bff) !important;
             animation: gradientFlow 4s ease infinite;
+            color: white !important;
+            border: none !important;
           }
 
           .add-to-cart-button:hover {
@@ -292,7 +294,7 @@ export function ProductModal({ product, isOpen, onClose, onAddToCart }: ProductM
                 )}
               </div>
 
-              <Button className="add-to-cart-button w-full mt-6 text-white" size="lg" onClick={handleAddToCart}>
+              <Button className="add-to-cart-button w-full mt-6" size="lg" onClick={handleAddToCart}>
                 Agregar al Carrito
               </Button>
             </div>

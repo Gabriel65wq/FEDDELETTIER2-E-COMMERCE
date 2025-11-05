@@ -141,6 +141,11 @@ export function ReferencesSection() {
           .blue-button:hover {
             box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
           }
+
+          .shimmer-button {
+            background-size: 300%;
+            animation: gradientFlow 4s ease infinite;
+          }
         `}</style>
 
         <div className="absolute inset-0 z-0 pointer-events-none">
@@ -186,11 +191,7 @@ export function ReferencesSection() {
             <Button
               size="lg"
               onClick={() => setShowGallery(true)}
-              className="blue-button relative overflow-hidden rounded-lg hover:scale-105 transition-transform px-8 py-6 text-lg font-semibold"
-              style={{
-                backgroundSize: "300%",
-                animation: "gradientFlow 4s ease infinite",
-              }}
+              className="blue-button shimmer-button relative overflow-hidden rounded-lg hover:scale-105 transition-transform px-8 py-6 text-lg font-semibold"
             >
               Ver Todas las Referencias
             </Button>
@@ -204,11 +205,7 @@ export function ReferencesSection() {
             <div className="flex items-center justify-between mb-10">
               <Button
                 onClick={() => setShowGallery(false)}
-                className="blue-button hover:scale-105 transition-transform px-6 py-3 rounded-lg font-semibold flex items-center gap-2"
-                style={{
-                  backgroundSize: "300%",
-                  animation: "gradientFlow 4s ease infinite",
-                }}
+                className="blue-button shimmer-button hover:scale-105 transition-transform px-6 py-3 rounded-lg font-semibold flex items-center gap-2"
               >
                 <ChevronLeft className="h-5 w-5" />
                 Volver

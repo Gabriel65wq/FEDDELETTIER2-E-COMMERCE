@@ -183,11 +183,7 @@ export function PaymentInvoice({
             ? "Tu pedido ha sido registrado exitosamente. Recuerda llevar el efectivo al momento del retiro."
             : "Tu pago ha sido procesado exitosamente. Recibirás un correo con los detalles de tu pedido."}
         </p>
-        <Button
-          size="lg"
-          onClick={() => window.location.reload()}
-          className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white"
-        >
+        <Button size="lg" onClick={() => window.location.reload()} className="blue-button shimmer-button">
           Volver al Inicio
         </Button>
       </div>
@@ -361,12 +357,7 @@ export function PaymentInvoice({
 
       {/* Botón de pago */}
       <div className="border-t border-blue-200 dark:border-blue-800 pt-4 mt-6">
-        <Button
-          className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white"
-          size="lg"
-          onClick={handlePayment}
-          disabled={isProcessing}
-        >
+        <Button className="w-full blue-button shimmer-button" size="lg" onClick={handlePayment} disabled={isProcessing}>
           {isProcessing ? (
             <>
               <Loader2 className="mr-2 h-5 w-5 animate-spin" />

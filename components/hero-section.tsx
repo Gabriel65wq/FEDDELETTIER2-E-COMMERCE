@@ -107,23 +107,13 @@ export function HeroSection() {
           animation: shimmer 2s infinite;
         }
 
-        .light-theme-button {
-          background: linear-gradient(135deg, #1e293b, #334155);
-          color: white;
-          border: none;
-        }
-
-        .light-theme-button:hover {
-          box-shadow: 0 10px 25px rgba(30, 41, 59, 0.3);
-        }
-
-        .dark-theme-button {
+        .blue-button {
           background: linear-gradient(135deg, #3b82f6, #06b6d4);
           color: white;
           border: none;
         }
 
-        .dark-theme-button:hover {
+        .blue-button:hover {
           box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
         }
       `}</style>
@@ -150,11 +140,7 @@ export function HeroSection() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button
-              size="lg"
-              asChild
-              className="w-full sm:w-auto rounded-full shimmer-button light-theme-button dark:dark-theme-button"
-            >
+            <Button size="lg" asChild className="w-full sm:w-auto rounded-full shimmer-button blue-button">
               <a href="#productos">Ver Productos</a>
             </Button>
 
@@ -163,7 +149,7 @@ export function HeroSection() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="w-full sm:w-auto rounded-full shimmer-button light-theme-button dark:dark-theme-button border-0 bg-transparent"
+                  className="w-full sm:w-auto rounded-full shimmer-button blue-button border-0 bg-transparent"
                 >
                   Redes Sociales
                 </Button>

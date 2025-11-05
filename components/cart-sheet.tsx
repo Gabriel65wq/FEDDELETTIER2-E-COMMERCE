@@ -37,7 +37,7 @@ export function CartSheet({ isOpen, onClose, items, onRemoveItem, onClearCart }:
   return (
     <>
       <Sheet open={isOpen && !showCheckout} onOpenChange={onClose}>
-        <SheetContent className="w-full sm:max-w-[900px] bg-white dark:bg-black text-black dark:text-white border-none">
+        <SheetContent className="w-full sm:max-w-[450px] bg-white dark:bg-black text-black dark:text-white border-none">
           <style jsx>{`
             @keyframes gradientFlow {
               0%, 100% {
@@ -170,7 +170,7 @@ export function CartSheet({ isOpen, onClose, items, onRemoveItem, onClearCart }:
       </Sheet>
 
       <Dialog open={showCheckout} onOpenChange={(open) => !open && setShowCheckout(false)}>
-        <DialogContent className="max-w-[1400px] w-[95vw] max-h-[95vh] overflow-y-auto bg-white dark:bg-black border-blue-200 dark:border-blue-800">
+        <DialogContent className="max-w-[1600px] w-[95vw] max-h-[95vh] overflow-y-auto bg-white dark:bg-black border-blue-200 dark:border-blue-800">
           <CheckoutForm items={items} totalUSD={totalUSD} onBack={handleBackToCart} />
         </DialogContent>
       </Dialog>

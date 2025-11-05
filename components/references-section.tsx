@@ -130,6 +130,17 @@ export function ReferencesSection() {
           :global(.dark) .ref-img:hover {
             box-shadow: 0 8px 20px rgba(0, 170, 255, 0.4);
           }
+
+          /* Botón azul para ambos themes */
+          .blue-button {
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            color: white;
+            border: none;
+          }
+
+          .blue-button:hover {
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+          }
         `}</style>
 
         <div className="absolute inset-0 z-0 pointer-events-none">
@@ -175,7 +186,7 @@ export function ReferencesSection() {
             <Button
               size="lg"
               onClick={() => setShowGallery(true)}
-              className="relative overflow-hidden rounded-lg bg-gradient-to-r from-black to-gray-800 dark:from-blue-600 dark:to-blue-400 text-white hover:scale-105 transition-transform px-8 py-6 text-lg font-semibold"
+              className="blue-button relative overflow-hidden rounded-lg hover:scale-105 transition-transform px-8 py-6 text-lg font-semibold"
               style={{
                 backgroundSize: "300%",
                 animation: "gradientFlow 4s ease infinite",
@@ -193,7 +204,7 @@ export function ReferencesSection() {
             <div className="flex items-center justify-between mb-10">
               <Button
                 onClick={() => setShowGallery(false)}
-                className="bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-500 dark:to-cyan-400 text-white hover:scale-105 transition-transform px-6 py-3 rounded-lg font-semibold flex items-center gap-2"
+                className="blue-button hover:scale-105 transition-transform px-6 py-3 rounded-lg font-semibold flex items-center gap-2"
                 style={{
                   backgroundSize: "300%",
                   animation: "gradientFlow 4s ease infinite",

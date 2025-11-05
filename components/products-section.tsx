@@ -136,23 +136,14 @@ export function ProductsSection({ onAddToCart }: ProductsSectionProps) {
           animation: shimmer 2s infinite;
         }
 
-        .light-theme-button {
-          background: linear-gradient(135deg, #1e293b, #334155);
-          color: white;
-          border: none;
-        }
-
-        .light-theme-button:hover {
-          box-shadow: 0 10px 25px rgba(30, 41, 59, 0.3);
-        }
-
-        .dark-theme-button {
+        /* Botones azules para ambos themes */
+        .blue-button {
           background: linear-gradient(135deg, #3b82f6, #06b6d4);
           color: white;
           border: none;
         }
 
-        .dark-theme-button:hover {
+        .blue-button:hover {
           box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
         }
       `}</style>
@@ -179,7 +170,9 @@ export function ProductsSection({ onAddToCart }: ProductsSectionProps) {
               variant={selectedCategory === category ? "default" : "outline"}
               onClick={() => setSelectedCategory(category)}
               className={
-                selectedCategory === category ? "shimmer-button light-theme-button dark:dark-theme-button" : ""
+                selectedCategory === category
+                  ? "shimmer-button blue-button"
+                  : "border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30"
               }
             >
               {category}

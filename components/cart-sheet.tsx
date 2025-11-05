@@ -170,7 +170,7 @@ export function CartSheet({ isOpen, onClose, items, onRemoveItem, onClearCart }:
       </Sheet>
 
       <Dialog open={showCheckout} onOpenChange={(open) => !open && setShowCheckout(false)}>
-        <DialogContent className="max-w-[2000px] w-[95vw] max-h-[95vh] overflow-y-auto bg-white dark:bg-black border-blue-200 dark:border-blue-800">
+        <DialogContent className="max-w-[1600px] w-[95vw] max-h-[95vh] overflow-y-auto bg-white dark:bg-black border-blue-200 dark:border-blue-800">
           <CheckoutForm items={items} totalUSD={totalUSD} onBack={handleBackToCart} />
         </DialogContent>
       </Dialog>

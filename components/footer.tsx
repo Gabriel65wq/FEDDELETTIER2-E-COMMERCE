@@ -7,7 +7,7 @@ export function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Columna 1: FEDELETTIER */}
-          <div className="space-y-4">
+          <div className="space-y-4 flex flex-col">
             <h3 className="font-bold text-lg">FEDELETTIER</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Importador directo de productos del momento. +1000 Clientes satisfechos.
@@ -35,7 +35,7 @@ export function Footer() {
           </div>
 
           {/* Columna 2: Enlaces Rápidos */}
-          <div className="space-y-4">
+          <div className="space-y-4 flex flex-col">
             <h3 className="font-bold text-lg">Enlaces Rápidos</h3>
             <ul className="space-y-2 text-sm">
               <li>
@@ -62,7 +62,7 @@ export function Footer() {
           </div>
 
           {/* Columna 3: Información */}
-          <div className="space-y-4">
+          <div className="space-y-4 flex flex-col">
             <h3 className="font-bold text-lg">Información</h3>
             <ul className="space-y-2 text-sm">
               <li>
@@ -89,7 +89,7 @@ export function Footer() {
           </div>
 
           {/* Columna 4: Contacto */}
-          <div className="space-y-4">
+          <div className="space-y-4 flex flex-col">
             <h3 className="font-bold text-lg">Contacto</h3>
             <div className="space-y-2 text-sm text-muted-foreground">
               <p>+54 9 11 2477 2377</p>

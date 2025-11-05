@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
-import { ChevronLeft, AlertCircle } from "lucide-react"
+import { AlertCircle } from "lucide-react"
 import type { CartItem } from "@/components/cart-sheet"
 import { PaymentInvoice } from "@/components/payment-invoice"
 
@@ -55,6 +55,8 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
     }
 
     fetchCryptoRate()
+    const interval = setInterval(fetchCryptoRate, 5 * 60 * 1000)
+    return () => clearInterval(interval)
   }, [])
 
   const validateDate = (date: string) => {
@@ -106,13 +108,11 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
   }
 
   const handleContinueToPayment = () => {
-    // Validar campos requeridos
     if (!formData.name || !formData.dni || !formData.email || !formData.phone) {
       alert("Por favor complete todos los campos de información personal")
       return
     }
 
-    // Validar fecha y horario para retiro en persona
     if (deliveryMethod === "retiro") {
       if (!pickupDate || !pickupTime) {
         alert("Por favor seleccione fecha y horario de retiro")
@@ -123,7 +123,6 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
       }
     }
 
-    // Validar domicilio para vía cargo
     if (deliveryMethod === "cargo") {
       if (!formData.address || !formData.number || !formData.locality || !formData.province || !formData.postal) {
         alert("Por favor complete todos los campos de domicilio")
@@ -155,79 +154,68 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
   return (
     <div className="flex flex-col h-full">
       <div className="border-b pb-4 mb-6">
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" onClick={onBack}>
-            <ChevronLeft className="h-5 w-5" />
-          </Button>
-          <h2 className="text-2xl font-bold">Resumen del Pedido</h2>
-        </div>
+        <h2 className="text-2xl font-bold text-center">Resumen del Pedido</h2>
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Columna izquierda: Resumen del pedido */}
+        <div className="space-y-8 max-w-4xl mx-auto">
           <div className="space-y-6">
-            <div className="space-y-4">
-              <h3 className="font-semibold text-xl">Productos</h3>
-              <div className="space-y-3">
-                {items.map((item) => (
-                  <div key={item.product.id} className="flex justify-between text-sm border-b pb-2">
-                    <span className="flex-1">
-                      {item.product.name} x{item.quantity}
-                    </span>
-                    <span className="font-semibold">
-                      ${((item.product.priceUSD || 0) * item.quantity).toFixed(2)} USD
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="border-t pt-4 space-y-3 bg-muted p-4 rounded-lg">
-                <div className="flex justify-between font-semibold text-lg">
-                  <span>Total en USD:</span>
-                  <span className="text-accent">${totalUSD.toFixed(2)} USD</span>
-                </div>
-                <div className="flex justify-between text-sm text-muted-foreground">
-                  <span>Dólar Cripto (criptoya.com):</span>
-                  <span>${cryptoRate.toFixed(2)} ARS</span>
-                </div>
-                <div className="flex justify-between font-bold text-xl border-t pt-3">
-                  <span>Total en ARS:</span>
-                  <span className="text-accent">
-                    ${totalARS.toLocaleString("es-AR", { maximumFractionDigits: 0 })} ARS
+            <h3 className="font-semibold text-xl">Productos</h3>
+            <div className="space-y-3">
+              {items.map((item) => (
+                <div key={item.product.id} className="flex justify-between text-sm border-b pb-2">
+                  <span className="flex-1">
+                    {item.product.name} x{item.quantity}
+                  </span>
+                  <span className="font-semibold">
+                    ${((item.product.priceUSD || 0) * item.quantity).toFixed(2)} USD
                   </span>
                 </div>
+              ))}
+            </div>
+
+            <div className="border-t pt-4 space-y-3 bg-muted p-4 rounded-lg">
+              <div className="flex justify-between font-semibold text-lg">
+                <span>Total en USD:</span>
+                <span className="text-accent">${totalUSD.toFixed(2)} USD</span>
+              </div>
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>Dólar Cripto (criptoya.com):</span>
+                <span>${cryptoRate.toFixed(2)} ARS</span>
+              </div>
+              <div className="flex justify-between font-bold text-xl border-t pt-3">
+                <span>Total en ARS:</span>
+                <span className="text-accent">
+                  ${totalARS.toLocaleString("es-AR", { maximumFractionDigits: 0 })} ARS
+                </span>
               </div>
             </div>
           </div>
 
-          {/* Columna derecha: Detalles del cliente */}
-          <div className="space-y-6">
-            {/* Método de entrega */}
-            <div className="space-y-3">
-              <Label className="text-base font-semibold">Método de Entrega</Label>
-              <RadioGroup
-                value={deliveryMethod}
-                onValueChange={(value) => setDeliveryMethod(value as "retiro" | "cargo")}
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="retiro" id="retiro" />
-                  <Label htmlFor="retiro" className="cursor-pointer">
-                    Retiro en Persona
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="cargo" id="cargo" />
-                  <Label htmlFor="cargo" className="cursor-pointer">
-                    Vía Cargo
-                  </Label>
-                </div>
-              </RadioGroup>
-            </div>
+          <div className="space-y-3">
+            <Label className="text-base font-semibold">Método de Entrega</Label>
+            <RadioGroup
+              value={deliveryMethod}
+              onValueChange={(value) => setDeliveryMethod(value as "retiro" | "cargo")}
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="retiro" id="retiro" />
+                <Label htmlFor="retiro" className="cursor-pointer">
+                  Retiro en Persona
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="cargo" id="cargo" />
+                <Label htmlFor="cargo" className="cursor-pointer">
+                  Vía Cargo
+                </Label>
+              </div>
+            </RadioGroup>
+          </div>
 
-            {/* Información personal */}
-            <div className="space-y-3">
-              <h3 className="font-semibold text-lg">Información Personal</h3>
+          <div className="space-y-3">
+            <h3 className="font-semibold text-lg">Información Personal</h3>
+            <div className="grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Nombre Completo</Label>
                 <Input
@@ -266,10 +254,12 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
                 />
               </div>
             </div>
+          </div>
 
-            {deliveryMethod === "cargo" && (
-              <div className="space-y-3 border-t pt-4">
-                <h3 className="font-semibold text-lg">Datos de Domicilio</h3>
+          {deliveryMethod === "cargo" && (
+            <div className="space-y-3 border-t pt-4">
+              <h3 className="font-semibold text-lg">Datos de Domicilio</h3>
+              <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="address">Dirección</Label>
                   <Input
@@ -324,7 +314,7 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
                     onChange={(e) => setFormData({ ...formData, postal: e.target.value })}
                   />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 md:col-span-2">
                   <Label htmlFor="instructions">Instrucciones de Entrega</Label>
                   <Textarea
                     id="instructions"
@@ -334,11 +324,13 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
                   />
                 </div>
               </div>
-            )}
+            </div>
+          )}
 
-            {deliveryMethod === "retiro" && (
-              <div className="space-y-3 border-t pt-4">
-                <h3 className="font-semibold text-lg">Fecha y Horario de Retiro</h3>
+          {deliveryMethod === "retiro" && (
+            <div className="space-y-3 border-t pt-4">
+              <h3 className="font-semibold text-lg">Fecha y Horario de Retiro</h3>
+              <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="date">Fecha de Retiro</Label>
                   <Input
@@ -366,13 +358,15 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
                   )}
                 </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Botón continuar al pago */}
-      <div className="border-t pt-4 mt-6">
+      <div className="border-t pt-4 mt-6 space-y-2">
+        <Button variant="outline" className="w-full bg-transparent" size="lg" onClick={onBack}>
+          Volver al Carrito
+        </Button>
         <Button className="w-full" size="lg" onClick={handleContinueToPayment}>
           Continuar al Pago
         </Button>

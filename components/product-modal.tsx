@@ -28,12 +28,10 @@ export function ProductModal({ product, isOpen, onClose, onAddToCart }: ProductM
         setLoading(true)
         const response = await fetch("https://criptoya.com/api/dolar")
         const data = await response.json()
-        // Usar el precio de venta del dólar cripto
         const rate = data.cripto?.ask || 1507.43
         setDolarCripto(rate)
       } catch (error) {
         console.error("[v0] Error fetching dolar cripto:", error)
-        // Valor por defecto si falla la API
         setDolarCripto(1507.43)
       } finally {
         setLoading(false)
@@ -42,9 +40,12 @@ export function ProductModal({ product, isOpen, onClose, onAddToCart }: ProductM
 
     if (isOpen) {
       fetchDolarCripto()
-      // Resetear selección al abrir
+      const interval = setInterval(fetchDolarCripto, 5 * 60 * 1000)
+
       setSelectedPrice(product.pricesByQuantity[0]?.priceUSD || 0)
       setSelectedQuantity(Number.parseInt(product.pricesByQuantity[0]?.quantity.replace(/[^\d]/g, "") || "1"))
+
+      return () => clearInterval(interval)
     }
   }, [isOpen, product])
 

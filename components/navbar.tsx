@@ -23,7 +23,7 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center px-4">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Logo - izquierda */}
         <div className="flex items-center">
           <a href="#inicio" className="text-xl font-bold tracking-tight">
@@ -32,7 +32,7 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
         </div>
 
         {/* Centro - Botones de navegación */}
-        <div className="flex-1 flex items-center justify-center gap-2">
+        <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" asChild className="hidden md:flex">
             <a href="#inicio">
               <Home className="h-5 w-5" />

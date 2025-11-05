@@ -5,11 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { X, ChevronLeft } from "lucide-react"
 
-const mainReferences = [
-  "/imagenes/referencias1.jpg",
-  "/imagenes/referencias2.jpg",
-  "/imagenes/referencias3.jpg",
-]
+const mainReferences = ["/imagenes/referencias1.jpg", "/imagenes/referencias2.jpg", "/imagenes/referencias3.jpg"]
 
 const allReferences = [
   "/imagenes/referencias1.jpg",
@@ -51,12 +47,11 @@ export function ReferencesSection() {
           <p className="text-lg leading-relaxed text-muted-foreground">💬 Testimonios reales de WhatsApp</p>
         </div>
 
-        {/* Vista previa */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 max-w-5xl mx-auto">
           {mainReferences.map((image, index) => (
             <div key={index} className="aspect-square relative overflow-hidden rounded-lg bg-muted">
               <img
-                src={image}
+                src={image || "/placeholder.svg"}
                 alt={`Referencia ${index + 1}`}
                 className="object-cover w-full h-full hover:scale-105 transition-transform"
               />
@@ -71,9 +66,8 @@ export function ReferencesSection() {
         </div>
       </div>
 
-      {/* Galería completa */}
       <Dialog open={showGallery} onOpenChange={setShowGallery}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
           <DialogHeader className="pb-4">
             <DialogTitle className="flex items-center justify-between text-xl">
               <Button variant="ghost" size="lg" onClick={() => setShowGallery(false)} className="gap-2">
@@ -81,13 +75,11 @@ export function ReferencesSection() {
                 Volver
               </Button>
               <span>Galería de Referencias</span>
-              <Button variant="ghost" size="icon" onClick={() => setShowGallery(false)}>
-                <X className="h-5 w-5" />
-              </Button>
+              <div className="w-[100px]"></div>
             </DialogTitle>
           </DialogHeader>
 
-          <div className="grid grid-cols-2 gap-4 mt-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
             {allReferences.map((image, index) => (
               <div
                 key={index}
@@ -95,7 +87,7 @@ export function ReferencesSection() {
                 onClick={() => setSelectedImage(image)}
               >
                 <img
-                  src={image}
+                  src={image || "/placeholder.svg"}
                   alt={`Referencia ${index + 1}`}
                   className="object-cover w-full h-full hover:scale-105 transition-transform"
                 />
@@ -105,7 +97,7 @@ export function ReferencesSection() {
         </DialogContent>
       </Dialog>
 
-      {/* Imagen ampliada */}
+      {/* Lightbox para imagen en tamaño real */}
       <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
         <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 bg-black/95">
           <div className="relative w-full h-full flex items-center justify-center p-4">
@@ -119,7 +111,7 @@ export function ReferencesSection() {
             </Button>
             {selectedImage && (
               <img
-                src={selectedImage}
+                src={selectedImage || "/placeholder.svg"}
                 alt="Referencia en tamaño real"
                 className="max-w-full max-h-[90vh] object-contain"
               />

@@ -22,23 +22,138 @@ export function ProductsSection({ onAddToCart }: ProductsSectionProps) {
 
   return (
     <section id="productos" className="py-16 md:py-24 bg-muted/30">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">Nuestros Productos</h2>
+      <style jsx>{`
+        @keyframes gradient-shift {
+          0%, 100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+        }
 
-        {/* Filtros */}
+        @keyframes shimmer {
+          0% {
+            background-position: -200% center;
+          }
+          100% {
+            background-position: 200% center;
+          }
+        }
+
+        @keyframes hr-expand {
+          0% {
+            width: 0%;
+            opacity: 0;
+          }
+          100% {
+            width: 100%;
+            opacity: 1;
+          }
+        }
+
+        .animated-gradient-text {
+          background: linear-gradient(
+            90deg,
+            #3b82f6,
+            #06b6d4,
+            #3b82f6,
+            #06b6d4
+          );
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: gradient-shift 3s ease infinite;
+        }
+
+        .animated-gradient-hr {
+          height: 3px;
+          background: linear-gradient(
+            90deg,
+            #3b82f6,
+            #06b6d4,
+            #3b82f6,
+            #06b6d4
+          );
+          background-size: 200% auto;
+          animation: gradient-shift 3s ease infinite, hr-expand 1s ease-out;
+          border: none;
+          margin: 0 auto;
+        }
+
+        .shimmer-button {
+          position: relative;
+          overflow: hidden;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .shimmer-button:hover {
+          transform: translateY(-2px);
+        }
+
+        .shimmer-button::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent
+          );
+          background-size: 200% 100%;
+          animation: shimmer 2s infinite;
+        }
+
+        .light-theme-button {
+          background: linear-gradient(135deg, #1e293b, #334155);
+          color: white;
+          border: none;
+        }
+
+        .light-theme-button:hover {
+          box-shadow: 0 10px 25px rgba(30, 41, 59, 0.3);
+        }
+
+        .dark-theme-button {
+          background: linear-gradient(135deg, #3b82f6, #06b6d4);
+          color: white;
+          border: none;
+        }
+
+        .dark-theme-button:hover {
+          box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+        }
+      `}</style>
+
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col items-center mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-3 animated-gradient-text uppercase">
+            Nuestros Productos
+          </h2>
+          <hr className="animated-gradient-hr w-64" />
+        </div>
+
         <div className="flex flex-wrap justify-center gap-2 mb-12">
           {categories.map((category) => (
             <Button
               key={category}
               variant={selectedCategory === category ? "default" : "outline"}
               onClick={() => setSelectedCategory(category)}
+              className={
+                selectedCategory === category ? "shimmer-button light-theme-button dark:dark-theme-button" : ""
+              }
             >
               {category}
             </Button>
           ))}
         </div>
 
-        {/* Grid */}
+        {/* Grid de productos */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {filteredProducts.map((product) => (
             <Card
@@ -71,6 +186,7 @@ export function ProductsSection({ onAddToCart }: ProductsSectionProps) {
         )}
       </div>
 
+      {/* Modal de detalle del producto */}
       {selectedProduct && (
         <ProductModal
           product={selectedProduct}

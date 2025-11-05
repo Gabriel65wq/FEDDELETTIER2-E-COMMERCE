@@ -36,8 +36,65 @@ export function ReferencesSection() {
 
   return (
     <section id="referencias" className="py-16 md:py-24 bg-muted/30">
+      <style jsx>{`
+        @keyframes gradient-shift {
+          0%, 100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+        }
+
+        @keyframes hr-expand {
+          0% {
+            width: 0%;
+            opacity: 0;
+          }
+          100% {
+            width: 100%;
+            opacity: 1;
+          }
+        }
+
+        .animated-gradient-text {
+          background: linear-gradient(
+            90deg,
+            #3b82f6,
+            #06b6d4,
+            #3b82f6,
+            #06b6d4
+          );
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: gradient-shift 3s ease infinite;
+        }
+
+        .animated-gradient-hr {
+          height: 3px;
+          background: linear-gradient(
+            90deg,
+            #3b82f6,
+            #06b6d4,
+            #3b82f6,
+            #06b6d4
+          );
+          background-size: 200% auto;
+          animation: gradient-shift 3s ease infinite, hr-expand 1s ease-out;
+          border: none;
+          margin: 0 auto;
+        }
+      `}</style>
+
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">REFERENCIAS</h2>
+        <div className="flex flex-col items-center mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-3 animated-gradient-text uppercase">
+            Referencias
+          </h2>
+          <hr className="animated-gradient-hr w-64" />
+        </div>
 
         <div className="max-w-2xl mx-auto text-center mb-12">
           <p className="text-lg leading-relaxed text-muted-foreground">✅ +1000 clientes satisfechos en todo el país</p>
@@ -60,7 +117,11 @@ export function ReferencesSection() {
         </div>
 
         <div className="text-center">
-          <Button size="lg" onClick={() => setShowGallery(true)}>
+          <Button
+            size="lg"
+            onClick={() => setShowGallery(true)}
+            className="relative overflow-hidden rounded-full bg-gradient-to-r from-black to-gray-800 dark:from-blue-600 dark:to-blue-400 text-white hover:scale-105 transition-transform before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-700"
+          >
             Ver Todas las Referencias
           </Button>
         </div>

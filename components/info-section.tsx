@@ -1,8 +1,68 @@
+"use client"
+
 export function InfoSection() {
   return (
     <section id="informacion" className="py-16 md:py-24">
+      <style jsx>{`
+        @keyframes gradient-shift {
+          0%, 100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+        }
+
+        @keyframes hr-expand {
+          0% {
+            width: 0%;
+            opacity: 0;
+          }
+          100% {
+            width: 100%;
+            opacity: 1;
+          }
+        }
+
+        .animated-gradient-text {
+          background: linear-gradient(
+            90deg,
+            #3b82f6,
+            #06b6d4,
+            #3b82f6,
+            #06b6d4
+          );
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: gradient-shift 3s ease infinite;
+        }
+
+        .animated-gradient-hr {
+          height: 3px;
+          background: linear-gradient(
+            90deg,
+            #3b82f6,
+            #06b6d4,
+            #3b82f6,
+            #06b6d4
+          );
+          background-size: 200% auto;
+          animation: gradient-shift 3s ease infinite, hr-expand 1s ease-out;
+          border: none;
+          margin: 0 auto;
+        }
+      `}</style>
+
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Información</h2>
+        <div className="flex flex-col items-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-3 animated-gradient-text uppercase">
+            Información
+          </h2>
+          <hr className="animated-gradient-hr w-64" />
+        </div>
+
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Retiros y Envíos */}
           <div className="space-y-4">

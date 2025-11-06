@@ -60,32 +60,17 @@ export function PaymentInvoice({
 
       if (paymentMethod === "efectivo") {
         console.log("[v0] Processing cash payment...")
-        const orderSaved = await saveOrderToSupabase("efectivo", "completed")
-
-        if (orderSaved) {
-          console.log("[v0] Cash payment successful")
-          setPaymentSuccess(true)
-        } else {
-          throw new Error("No se ha podido guardar el pedido. Por favor intente nuevamente.")
-        }
+        // Simular procesamiento
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        console.log("[v0] Cash payment successful")
+        setPaymentSuccess(true)
       } else {
         console.log("[v0] Creating MercadoPago preference...")
         const preference = await createMercadoPagoPreference()
 
         if (preference && preference.init_point) {
           console.log("[v0] MercadoPago preference created:", preference.init_point)
-
-          // Guardar pedido en Supabase con estado pending
-          const orderSaved = await saveOrderToSupabase("mercadopago", "pending")
-
-          if (orderSaved) {
-            console.log("[v0] Order saved, opening MercadoPago link...")
-            // Abrir link de Mercado Pago en nueva pestaña
-            window.open(preference.init_point, "_blank")
-            setPaymentSuccess(true)
-          } else {
-            throw new Error("No se ha podido guardar el pedido. Por favor intente nuevamente.")
-          }
+          window.location.href = preference.init_point
         } else {
           throw new Error("Error al generar el link de pago de Mercado Pago. Por favor intente nuevamente.")
         }
@@ -139,66 +124,6 @@ export function PaymentInvoice({
       return data
     } catch (error) {
       console.error("[v0] Error creating MercadoPago preference:", error)
-      throw error
-    }
-  }
-
-  const saveOrderToSupabase = async (paymentMethod: string, status: string) => {
-    try {
-      console.log("[v0] Saving order to Supabase...")
-      console.log("[v0] Order data:", {
-        items: items.length,
-        total_usd: totalUSD,
-        total_ars: totalARS,
-        crypto_rate: cryptoRate,
-        delivery_method: deliveryMethod,
-        payment_method: paymentMethod,
-        status: status,
-      })
-
-      const response = await fetch("/api/orders/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          items: items.map((item) => ({
-            product_id: item.product.id,
-            product_name: item.product.name,
-            quantity: item.quantity,
-            price_usd: item.product.priceUSD || 0,
-          })),
-          total_usd: totalUSD,
-          total_ars: totalARS,
-          crypto_rate: cryptoRate,
-          delivery_method: deliveryMethod,
-          payment_method: paymentMethod,
-          status: status,
-          customer_name: formData.name,
-          customer_dni: formData.dni,
-          customer_email: formData.email,
-          customer_phone: formData.phone,
-          delivery_address:
-            deliveryMethod === "cargo"
-              ? `${formData.address} ${formData.number}, ${formData.floor || ""}, ${formData.locality}, ${formData.province}, CP: ${formData.postal}`
-              : null,
-          delivery_instructions: formData.instructions || null,
-          pickup_date: pickupDate || null,
-          pickup_time: pickupTime || null,
-        }),
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        console.error("[v0] Error response from orders API:", errorData)
-        throw new Error("Error al guardar el pedido en la base de datos")
-      }
-
-      const result = await response.json()
-      console.log("[v0] Order saved successfully:", result)
-      return true
-    } catch (error) {
-      console.error("[v0] Error saving order to Supabase:", error)
       throw error
     }
   }

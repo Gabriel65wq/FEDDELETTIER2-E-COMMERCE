@@ -12,7 +12,15 @@ export async function POST(request: Request) {
       throw new Error("No hay productos en el pedido")
     }
 
-    const preference = {
+    const isProduction = process.env.NEXT_PUBLIC_VERCEL_URL || process.env.VERCEL_URL
+    const baseUrl = isProduction
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL || process.env.VERCEL_URL}`
+      : "http://localhost:3000"
+
+    console.log("[v0] Environment:", isProduction ? "production" : "development")
+    console.log("[v0] Base URL:", baseUrl)
+
+    const preference: any = {
       items: body.items.map((item: any) => ({
         title: item.title,
         quantity: item.quantity,
@@ -20,13 +28,21 @@ export async function POST(request: Request) {
         currency_id: "USD",
       })),
       payer: body.payer,
-      back_urls: {
-        success: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/payment/success`,
-        failure: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/payment/failure`,
-        pending: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/payment/pending`,
-      },
-      auto_return: "approved",
-      notification_url: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/mercadopago/webhook`,
+      statement_descriptor: "FEDDELETTIER",
+      external_reference: `ORDER-${Date.now()}`,
+    }
+
+    if (isProduction) {
+      preference.back_urls = {
+        success: `${baseUrl}/payment/success`,
+        failure: `${baseUrl}/payment/failure`,
+        pending: `${baseUrl}/payment/pending`,
+      }
+      preference.auto_return = "approved"
+      preference.notification_url = `${baseUrl}/api/mercadopago/webhook`
+      console.log("[v0] Production mode: back_urls and auto_return enabled")
+    } else {
+      console.log("[v0] Development mode: back_urls and auto_return disabled (MercadoPago doesn't accept localhost)")
     }
 
     console.log("[v0] Sending preference to MercadoPago:", JSON.stringify(preference, null, 2))

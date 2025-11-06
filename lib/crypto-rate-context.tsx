@@ -28,7 +28,7 @@ export function CryptoRateProvider({ children }: { children: ReactNode }) {
       const data = await response.json()
       console.log("[v0] Crypto rate data received:", data)
 
-      const rate = data.cripto?.ask || data.cripto?.bid || 1499.25
+      const rate = data.cripto?.ask || data.cripto?.bid || 1507.43
       console.log("[v0] Crypto rate:", rate)
 
       setCryptoRate(rate)

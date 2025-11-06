@@ -22,17 +22,12 @@ export default function PaymentPendingPage() {
       status: status || undefined,
     })
 
+    setIsLoading(false)
+
     console.log("[v0] Payment pending page loaded with params:", {
       paymentId,
       status,
     })
-
-    const cleanupLocalStorage = () => {
-      localStorage.removeItem("pedido_id")
-      setIsLoading(false)
-    }
-
-    cleanupLocalStorage()
   }, [searchParams])
 
   if (isLoading) {

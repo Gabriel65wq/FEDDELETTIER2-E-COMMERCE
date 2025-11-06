@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button"
 export default function PaymentSuccessPage() {
   const searchParams = useSearchParams()
   const [isLoading, setIsLoading] = useState(true)
-  const [isUpdating, setIsUpdating] = useState(false)
   const [paymentInfo, setPaymentInfo] = useState<{
     paymentId?: string
     status?: string
@@ -26,60 +25,19 @@ export default function PaymentSuccessPage() {
       externalReference: externalReference || undefined,
     })
 
+    setIsLoading(false)
+
     console.log("[v0] Payment success page loaded with params:", {
       paymentId,
       status,
       externalReference,
     })
+  }, [searchParams])
 
-    const updateOrderStatus = async () => {
-      const pedidoId = localStorage.getItem("pedido_id")
-
-      if (pedidoId && paymentId) {
-        setIsUpdating(true)
-        try {
-          console.log("[v0] Updating order status to pagado_mercadopago...")
-
-          const response = await fetch("/api/pedidos/actualizar-estado", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              pedidoId,
-              estado: "pagado_mercadopago",
-              mercadopagoData: {
-                paymentId,
-              },
-            }),
-          })
-
-          if (response.ok) {
-            console.log("[v0] Order status updated successfully")
-            localStorage.removeItem("pedido_id")
-          } else {
-            console.error("[v0] Failed to update order status")
-          }
-        } catch (error) {
-          console.error("[v0] Error updating order status:", error)
-        } finally {
-          setIsUpdating(false)
-        }
-      }
-
-      setIsLoading(false)
-    }
-
-    updateOrderStatus()
-  }, [searchParams, paymentInfo.paymentId])
-
-  if (isLoading || isUpdating) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-900 dark:to-gray-800">
-        <div className="flex flex-col items-center gap-4">
-          <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
-          <p className="text-muted-foreground">{isUpdating ? "Confirmando tu pedido..." : "Cargando..."}</p>
-        </div>
+        <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
       </div>
     )
   }

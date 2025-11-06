@@ -48,7 +48,58 @@ export function PaymentInvoice({
   const [isProcessing, setIsProcessing] = useState(false)
   const [paymentSuccess, setPaymentSuccess] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [pedidoId, setPedidoId] = useState<string | null>(null)
+
+  const guardarPedidoEnGoogleSheets = async () => {
+    try {
+      console.log("[v0] Guardando pedido en Google Sheets...")
+
+      // Preparar los productos como string
+      const productosString = items
+        .map((item) => `${item.product.name} x${item.quantity} ($${item.product.priceUSD})`)
+        .join(", ")
+
+      const pedidoData = {
+        nombre_completo: formData.name,
+        dni: formData.dni,
+        telefono: formData.phone,
+        gmail: formData.email,
+        fecha_retiro: deliveryMethod === "retiro" ? pickupDate || "" : "",
+        horario_retiro: deliveryMethod === "retiro" ? pickupTime || "" : "",
+        direccion: deliveryMethod === "cargo" ? formData.address || "" : "",
+        altura: deliveryMethod === "cargo" ? formData.number || "" : "",
+        piso_departamento: deliveryMethod === "cargo" ? formData.floor || "" : "",
+        localidad: deliveryMethod === "cargo" ? formData.locality || "" : "",
+        provincia: deliveryMethod === "cargo" ? formData.province || "" : "",
+        codigo_postal: deliveryMethod === "cargo" ? formData.postal || "" : "",
+        instrucciones_entrega: deliveryMethod === "cargo" ? formData.instructions || "" : "",
+        metodo_entrega: deliveryMethod === "retiro" ? "Retiro en Persona" : "Vía Cargo",
+        metodo_pago: paymentMethod === "efectivo" ? "Efectivo" : "Mercado Pago",
+        productos: productosString,
+        total_usd: totalUSD,
+        total_ars: totalARS,
+      }
+
+      const response = await fetch("/api/guardar-pedido", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(pedidoData),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || "Error al guardar el pedido")
+      }
+
+      const result = await response.json()
+      console.log("[v0] Pedido guardado exitosamente:", result)
+      return result
+    } catch (error) {
+      console.error("[v0] Error al guardar pedido:", error)
+      throw error
+    }
+  }
 
   const handlePayment = async () => {
     setIsProcessing(true)
@@ -59,35 +110,20 @@ export function PaymentInvoice({
       console.log("[v0] Payment method:", paymentMethod)
       console.log("[v0] Delivery method:", deliveryMethod)
 
-      const pedido = await crearPedidoEnSupabase()
-
-      if (!pedido || !pedido.id) {
-        throw new Error("Error al crear el pedido en la base de datos")
-      }
-
-      setPedidoId(pedido.id)
-      console.log("[v0] Pedido creado en Supabase:", pedido.id)
+      await guardarPedidoEnGoogleSheets()
 
       if (paymentMethod === "efectivo") {
         console.log("[v0] Processing cash payment...")
-
-        await actualizarEstadoPedido(pedido.id, "pagado_efectivo")
-
+        // Simular procesamiento
+        await new Promise((resolve) => setTimeout(resolve, 1000))
         console.log("[v0] Cash payment successful")
         setPaymentSuccess(true)
       } else {
         console.log("[v0] Creating MercadoPago preference...")
         const preference = await createMercadoPagoPreference()
 
-        if (preference && preference.init_point && preference.id) {
+        if (preference && preference.init_point) {
           console.log("[v0] MercadoPago preference created:", preference.init_point)
-
-          await actualizarEstadoPedido(pedido.id, "pendiente", {
-            mercadopagoData: { preferenceId: preference.id },
-          })
-
-          localStorage.setItem("pedido_id", pedido.id)
-
           window.location.href = preference.init_point
         } else {
           throw new Error("Error al generar el link de pago de Mercado Pago. Por favor intente nuevamente.")
@@ -100,97 +136,6 @@ export function PaymentInvoice({
       )
     } finally {
       setIsProcessing(false)
-    }
-  }
-
-  const crearPedidoEnSupabase = async () => {
-    try {
-      console.log("[v0] Creating order in Supabase...")
-
-      const response = await fetch("/api/pedidos/crear", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          cliente: {
-            nombre: formData.name,
-            email: formData.email,
-            telefono: formData.phone,
-            direccion: formData.address,
-            ciudad: formData.locality,
-            provincia: formData.province,
-            codigoPostal: formData.postal,
-          },
-          productos: items.map((item) => ({
-            nombre: item.product.name,
-            descripcion: item.product.description,
-            cantidad: item.quantity,
-            precioUnitario: item.product.priceUSD || 0,
-            subtotal: (item.product.priceUSD || 0) * item.quantity,
-            imagenUrl: item.product.image,
-            sku: item.product.id,
-          })),
-          metodoEntrega: deliveryMethod,
-          metodoPago: paymentMethod,
-          totales: {
-            subtotal: totalUSD,
-            descuento: 0,
-            envio: 0,
-            total: totalUSD,
-          },
-          notas: formData.instructions || `Retiro: ${pickupDate} ${pickupTime}`,
-        }),
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        console.error("[v0] Error creating order:", errorData)
-        throw new Error(errorData.error || "Error al crear el pedido")
-      }
-
-      const data = await response.json()
-      console.log("[v0] Order created successfully:", data)
-      return data.pedido
-    } catch (error) {
-      console.error("[v0] Error in crearPedidoEnSupabase:", error)
-      throw error
-    }
-  }
-
-  const actualizarEstadoPedido = async (
-    pedidoId: string,
-    estado: string,
-    options?: { comprobanteUrl?: string; mercadopagoData?: any },
-  ) => {
-    try {
-      console.log("[v0] Updating order status:", pedidoId, estado)
-
-      const response = await fetch("/api/pedidos/actualizar-estado", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          pedidoId,
-          estado,
-          comprobanteUrl: options?.comprobanteUrl,
-          mercadopagoData: options?.mercadopagoData,
-        }),
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        console.error("[v0] Error updating order status:", errorData)
-        throw new Error(errorData.error || "Error al actualizar el estado del pedido")
-      }
-
-      const data = await response.json()
-      console.log("[v0] Order status updated successfully:", data)
-      return data
-    } catch (error) {
-      console.error("[v0] Error in actualizarEstadoPedido:", error)
-      throw error
     }
   }
 
@@ -251,11 +196,6 @@ export function PaymentInvoice({
             ? "Tu pedido ha sido registrado exitosamente. Recuerda llevar el efectivo al momento del retiro."
             : "Tu pedido ha sido registrado. Completa el pago en Mercado Pago para confirmar tu compra."}
         </p>
-        {pedidoId && (
-          <p className="text-sm text-muted-foreground">
-            Número de pedido: <span className="font-mono font-semibold">{pedidoId.slice(0, 8)}</span>
-          </p>
-        )}
         <Button size="lg" onClick={() => window.location.reload()} className="blue-button shimmer-button">
           Volver al Inicio
         </Button>

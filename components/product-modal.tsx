@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import type { Product } from "@/lib/products-data"
+import { useCryptoRate } from "@/lib/crypto-rate-context"
 
 interface ProductModalProps {
   product: Product
@@ -19,44 +20,12 @@ export function ProductModal({ product, isOpen, onClose, onAddToCart }: ProductM
   const [selectedQuantity, setSelectedQuantity] = useState<number>(
     Number.parseInt(product.pricesByQuantity[0]?.quantity.replace(/[^\d]/g, "") || "1"),
   )
-  const [dolarCripto, setDolarCripto] = useState<number | null>(null)
-  const [loading, setLoading] = useState(true)
+  const { cryptoRate, isLoading } = useCryptoRate()
 
   useEffect(() => {
-    const fetchDolarCripto = async () => {
-      try {
-        setLoading(true)
-        console.log("[v0] Fetching dolar cripto from criptoya.com...")
-        const response = await fetch("https://criptoya.com/api/dolar")
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
-
-        const data = await response.json()
-        console.log("[v0] Dolar cripto data received:", data)
-
-        const rate = data.cripto?.ask || data.cripto?.bid || 1507.43
-        console.log("[v0] Dolar cripto rate:", rate)
-        setDolarCripto(rate)
-      } catch (error) {
-        console.error("[v0] Error fetching dolar cripto:", error)
-        // Usar valor por defecto en caso de error
-        setDolarCripto(1507.43)
-      } finally {
-        setLoading(false)
-      }
-    }
-
     if (isOpen) {
-      fetchDolarCripto()
-      // Actualizar cada 5 minutos
-      const interval = setInterval(fetchDolarCripto, 5 * 60 * 1000)
-
       setSelectedPrice(product.pricesByQuantity[0]?.priceUSD || 0)
       setSelectedQuantity(Number.parseInt(product.pricesByQuantity[0]?.quantity.replace(/[^\d]/g, "") || "1"))
-
-      return () => clearInterval(interval)
     }
   }, [isOpen, product])
 
@@ -66,7 +35,7 @@ export function ProductModal({ product, isOpen, onClose, onAddToCart }: ProductM
   }
 
   const totalUSD = selectedPrice * selectedQuantity
-  const totalARS = dolarCripto ? totalUSD * dolarCripto : 0
+  const totalARS = cryptoRate ? totalUSD * cryptoRate : 0
 
   const handleAddToCart = () => {
     const productWithPrice = {
@@ -287,13 +256,13 @@ export function ProductModal({ product, isOpen, onClose, onAddToCart }: ProductM
                   <span className="font-semibold">Subtotal USD:</span>
                   <span className="font-bold text-lg">${totalUSD.toFixed(2)}</span>
                 </div>
-                {loading ? (
+                {isLoading ? (
                   <div className="text-sm text-muted-foreground text-center py-2">Cargando cotización...</div>
                 ) : (
                   <>
                     <div className="flex justify-between text-sm text-muted-foreground">
                       <span>Dólar Cripto:</span>
-                      <span>${dolarCripto?.toFixed(2)}</span>
+                      <span>${cryptoRate?.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-xl font-bold border-t pt-3">
                       <span>Total ARS:</span>

@@ -200,21 +200,21 @@ export function ReferencesSection() {
       </section>
 
       {showGallery && (
-        <div className="fixed inset-0 bg-white dark:bg-black z-[9999] flex flex-col">
-          <div className="flex-1 overflow-y-auto">
-            <div className="w-[90%] max-w-[1200px] mx-auto py-10">
-              <div className="flex items-center justify-between mb-10">
-                <Button
-                  onClick={() => setShowGallery(false)}
-                  className="blue-button shimmer-button hover:scale-105 transition-transform px-6 py-3 rounded-lg font-semibold flex items-center gap-2"
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                  Volver
-                </Button>
-                <h2 className="text-2xl font-bold text-foreground">Galería de Referencias</h2>
-                <div className="w-[100px]"></div>
-              </div>
+        <div className="fixed inset-0 bg-white dark:bg-black z-[9999] flex flex-col overflow-hidden">
+          <div className="flex items-center justify-between p-6 border-b border-border">
+            <Button
+              onClick={() => setShowGallery(false)}
+              className="blue-button shimmer-button hover:scale-105 transition-transform px-6 py-3 rounded-lg font-semibold flex items-center gap-2"
+            >
+              <ChevronLeft className="h-5 w-5" />
+              Volver
+            </Button>
+            <h2 className="text-2xl font-bold text-foreground">Galería de Referencias</h2>
+            <div className="w-[100px]"></div>
+          </div>
 
+          <div className="flex-1 overflow-y-auto p-6">
+            <div className="w-full max-w-[1200px] mx-auto">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {allReferences.map((image, index) => (
                   <div

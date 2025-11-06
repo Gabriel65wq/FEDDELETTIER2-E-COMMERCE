@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { AlertCircle } from "lucide-react"
 import type { CartItem } from "@/components/cart-sheet"
 import { PaymentInvoice } from "@/components/payment-invoice"
+import { useCryptoRate } from "@/lib/crypto-rate-context"
 
 interface CheckoutFormProps {
   items: CartItem[]
@@ -19,7 +20,7 @@ interface CheckoutFormProps {
 }
 
 export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
-  const [cryptoRate, setCryptoRate] = useState<number>(0)
+  const { cryptoRate, isLoading } = useCryptoRate()
   const [deliveryMethod, setDeliveryMethod] = useState<"retiro" | "cargo">("retiro")
   const [pickupDate, setPickupDate] = useState("")
   const [pickupTime, setPickupTime] = useState("")
@@ -40,35 +41,6 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
     postal: "",
     instructions: "",
   })
-
-  useEffect(() => {
-    const fetchCryptoRate = async () => {
-      try {
-        console.log("[v0] Fetching crypto rate from criptoya.com...")
-        const response = await fetch("https://criptoya.com/api/dolar")
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
-
-        const data = await response.json()
-        console.log("[v0] Crypto rate data received:", data)
-
-        const rate = data.cripto?.ask || data.cripto?.bid || 1507.43
-        console.log("[v0] Crypto rate:", rate)
-        setCryptoRate(rate)
-      } catch (error) {
-        console.error("[v0] Error fetching crypto rate:", error)
-        // Usar valor por defecto en caso de error
-        setCryptoRate(1507.43)
-      }
-    }
-
-    fetchCryptoRate()
-    // Actualizar cada 5 minutos
-    const interval = setInterval(fetchCryptoRate, 5 * 60 * 1000)
-    return () => clearInterval(interval)
-  }, [])
 
   const validateDate = (date: string) => {
     if (!date) {
@@ -95,7 +67,7 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
       return false
     }
 
-    const [hours, minutes] = time.split(":").map(Number)
+    const [hours] = time.split(":").map(Number)
 
     if (hours < 9 || hours >= 17) {
       setTimeError("El horario debe ser entre 9 AM y 5 PM")
@@ -195,16 +167,22 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
                 <span className="text-blue-900 dark:text-blue-100">Total en USD:</span>
                 <span className="text-blue-600 dark:text-cyan-400">${totalUSD.toFixed(2)} USD</span>
               </div>
-              <div className="flex justify-between text-sm text-muted-foreground">
-                <span>Dólar Cripto (criptoya.com):</span>
-                <span>${cryptoRate.toFixed(2)} ARS</span>
-              </div>
-              <div className="flex justify-between font-bold text-xl border-t border-blue-300 dark:border-blue-700 pt-3">
-                <span className="text-blue-900 dark:text-blue-100">Total en ARS:</span>
-                <span className="text-blue-600 dark:text-cyan-400">
-                  ${totalARS.toLocaleString("es-AR", { maximumFractionDigits: 0 })} ARS
-                </span>
-              </div>
+              {isLoading ? (
+                <div className="text-sm text-muted-foreground text-center py-2">Cargando cotización...</div>
+              ) : (
+                <>
+                  <div className="flex justify-between text-sm text-muted-foreground">
+                    <span>Dólar Cripto (criptoya.com):</span>
+                    <span>${cryptoRate.toFixed(2)} ARS</span>
+                  </div>
+                  <div className="flex justify-between font-bold text-xl border-t border-blue-300 dark:border-blue-700 pt-3">
+                    <span className="text-blue-900 dark:text-blue-100">Total en ARS:</span>
+                    <span className="text-blue-600 dark:text-cyan-400">
+                      ${totalARS.toLocaleString("es-AR", { maximumFractionDigits: 0 })} ARS
+                    </span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
 

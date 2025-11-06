@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 export default function PaymentFailurePage() {
   const searchParams = useSearchParams()
   const [isLoading, setIsLoading] = useState(true)
+  const [isUpdating, setIsUpdating] = useState(false)
   const [errorInfo, setErrorInfo] = useState<{
     paymentId?: string
     status?: string
@@ -22,15 +23,51 @@ export default function PaymentFailurePage() {
       status: status || undefined,
     })
 
-    setIsLoading(false)
-
     console.log("[v0] Payment failure page loaded with params:", {
       paymentId,
       status,
     })
-  }, [searchParams])
 
-  if (isLoading) {
+    const updateOrderStatus = async () => {
+      const pedidoId = localStorage.getItem("pedido_id")
+
+      if (pedidoId) {
+        setIsUpdating(true)
+        try {
+          console.log("[v0] Updating order status to cancelado...")
+
+          const response = await fetch("/api/pedidos/actualizar-estado", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              pedidoId,
+              estado: "cancelado",
+              mercadopagoData: paymentId ? { paymentId } : undefined,
+            }),
+          })
+
+          if (response.ok) {
+            console.log("[v0] Order status updated to cancelado")
+            localStorage.removeItem("pedido_id")
+          } else {
+            console.error("[v0] Failed to update order status")
+          }
+        } catch (error) {
+          console.error("[v0] Error updating order status:", error)
+        } finally {
+          setIsUpdating(false)
+        }
+      }
+
+      setIsLoading(false)
+    }
+
+    updateOrderStatus()
+  }, [searchParams, errorInfo.paymentId])
+
+  if (isLoading || isUpdating) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 to-orange-50 dark:from-gray-900 dark:to-gray-800">
         <Loader2 className="h-12 w-12 animate-spin text-red-600" />

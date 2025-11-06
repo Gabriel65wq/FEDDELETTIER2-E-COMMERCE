@@ -200,8 +200,8 @@ export function ReferencesSection() {
       </section>
 
       {showGallery && (
-        <div className="fixed inset-0 bg-white dark:bg-black z-[9999] overflow-hidden">
-          <div className="w-full h-full overflow-y-auto">
+        <div className="fixed inset-0 bg-white dark:bg-black z-[9999] flex flex-col">
+          <div className="flex-1 overflow-y-auto">
             <div className="w-[90%] max-w-[1200px] mx-auto py-10">
               <div className="flex items-center justify-between mb-10">
                 <Button

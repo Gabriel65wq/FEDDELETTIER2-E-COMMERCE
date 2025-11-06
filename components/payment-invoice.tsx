@@ -55,15 +55,18 @@ export function PaymentInvoice({
 
     try {
       console.log("[v0] Starting payment process...")
+      console.log("[v0] Payment method:", paymentMethod)
+      console.log("[v0] Delivery method:", deliveryMethod)
 
       if (paymentMethod === "efectivo") {
         console.log("[v0] Processing cash payment...")
         const orderSaved = await saveOrderToSupabase("efectivo", "completed")
 
         if (orderSaved) {
+          console.log("[v0] Cash payment successful")
           setPaymentSuccess(true)
         } else {
-          throw new Error("Error al guardar el pedido")
+          throw new Error("No se ha podido guardar el pedido. Por favor intente nuevamente.")
         }
       } else {
         console.log("[v0] Creating MercadoPago preference...")
@@ -76,14 +79,15 @@ export function PaymentInvoice({
           const orderSaved = await saveOrderToSupabase("mercadopago", "pending")
 
           if (orderSaved) {
+            console.log("[v0] Order saved, opening MercadoPago link...")
             // Abrir link de Mercado Pago en nueva pestaña
             window.open(preference.init_point, "_blank")
             setPaymentSuccess(true)
           } else {
-            throw new Error("Error al guardar el pedido")
+            throw new Error("No se ha podido guardar el pedido. Por favor intente nuevamente.")
           }
         } else {
-          throw new Error("Error al crear la preferencia de pago")
+          throw new Error("Error al generar el link de pago de Mercado Pago. Por favor intente nuevamente.")
         }
       }
     } catch (error) {
@@ -98,6 +102,7 @@ export function PaymentInvoice({
 
   const createMercadoPagoPreference = async () => {
     try {
+      console.log("[v0] Sending request to MercadoPago API...")
       const response = await fetch("/api/mercadopago/create-preference", {
         method: "POST",
         headers: {
@@ -126,19 +131,30 @@ export function PaymentInvoice({
       if (!response.ok) {
         const errorData = await response.json()
         console.error("[v0] Error response from MercadoPago API:", errorData)
-        throw new Error("Error creating preference")
+        throw new Error("Error al crear la preferencia de pago")
       }
 
-      return await response.json()
+      const data = await response.json()
+      console.log("[v0] MercadoPago preference created successfully:", data)
+      return data
     } catch (error) {
       console.error("[v0] Error creating MercadoPago preference:", error)
-      return null
+      throw error
     }
   }
 
   const saveOrderToSupabase = async (paymentMethod: string, status: string) => {
     try {
       console.log("[v0] Saving order to Supabase...")
+      console.log("[v0] Order data:", {
+        items: items.length,
+        total_usd: totalUSD,
+        total_ars: totalARS,
+        crypto_rate: cryptoRate,
+        delivery_method: deliveryMethod,
+        payment_method: paymentMethod,
+        status: status,
+      })
 
       const response = await fetch("/api/orders/create", {
         method: "POST",
@@ -175,7 +191,7 @@ export function PaymentInvoice({
       if (!response.ok) {
         const errorData = await response.json()
         console.error("[v0] Error response from orders API:", errorData)
-        throw new Error("Error saving order")
+        throw new Error("Error al guardar el pedido en la base de datos")
       }
 
       const result = await response.json()
@@ -183,7 +199,7 @@ export function PaymentInvoice({
       return true
     } catch (error) {
       console.error("[v0] Error saving order to Supabase:", error)
-      return false
+      throw error
     }
   }
 

@@ -44,17 +44,28 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
   useEffect(() => {
     const fetchCryptoRate = async () => {
       try {
+        console.log("[v0] Fetching crypto rate from criptoya.com...")
         const response = await fetch("https://criptoya.com/api/dolar")
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
         const data = await response.json()
-        const rate = data.cripto?.ask || 1507.43
+        console.log("[v0] Crypto rate data received:", data)
+
+        const rate = data.cripto?.ask || data.cripto?.bid || 1507.43
+        console.log("[v0] Crypto rate:", rate)
         setCryptoRate(rate)
       } catch (error) {
         console.error("[v0] Error fetching crypto rate:", error)
+        // Usar valor por defecto en caso de error
         setCryptoRate(1507.43)
       }
     }
 
     fetchCryptoRate()
+    // Actualizar cada 5 minutos
     const interval = setInterval(fetchCryptoRate, 5 * 60 * 1000)
     return () => clearInterval(interval)
   }, [])

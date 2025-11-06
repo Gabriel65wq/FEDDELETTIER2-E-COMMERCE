@@ -26,12 +26,22 @@ export function ProductModal({ product, isOpen, onClose, onAddToCart }: ProductM
     const fetchDolarCripto = async () => {
       try {
         setLoading(true)
+        console.log("[v0] Fetching dolar cripto from criptoya.com...")
         const response = await fetch("https://criptoya.com/api/dolar")
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
         const data = await response.json()
-        const rate = data.cripto?.ask || 1507.43
+        console.log("[v0] Dolar cripto data received:", data)
+
+        const rate = data.cripto?.ask || data.cripto?.bid || 1507.43
+        console.log("[v0] Dolar cripto rate:", rate)
         setDolarCripto(rate)
       } catch (error) {
         console.error("[v0] Error fetching dolar cripto:", error)
+        // Usar valor por defecto en caso de error
         setDolarCripto(1507.43)
       } finally {
         setLoading(false)
@@ -40,6 +50,7 @@ export function ProductModal({ product, isOpen, onClose, onAddToCart }: ProductM
 
     if (isOpen) {
       fetchDolarCripto()
+      // Actualizar cada 5 minutos
       const interval = setInterval(fetchDolarCripto, 5 * 60 * 1000)
 
       setSelectedPrice(product.pricesByQuantity[0]?.priceUSD || 0)

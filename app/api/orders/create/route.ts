@@ -10,7 +10,15 @@ export async function POST(request: Request) {
   try {
     const body = await request.json()
 
-    console.log("[v0] Creating order with data:", body)
+    console.log("[v0] Creating order with data:", JSON.stringify(body, null, 2))
+
+    if (!body.customer_name || !body.customer_email || !body.customer_phone) {
+      throw new Error("Faltan datos del cliente")
+    }
+
+    if (!body.items || body.items.length === 0) {
+      throw new Error("El pedido no tiene productos")
+    }
 
     const supabase = createClient(supabaseUrl, supabaseKey)
 
@@ -38,7 +46,7 @@ export async function POST(request: Request) {
 
     if (orderError) {
       console.error("[v0] Error creating order:", orderError)
-      throw orderError
+      throw new Error(`Error al crear el pedido: ${orderError.message}`)
     }
 
     console.log("[v0] Order created successfully:", order)
@@ -56,7 +64,7 @@ export async function POST(request: Request) {
 
     if (itemsError) {
       console.error("[v0] Error creating order items:", itemsError)
-      throw itemsError
+      throw new Error(`Error al crear los items del pedido: ${itemsError.message}`)
     }
 
     console.log("[v0] Order items created successfully")
@@ -64,6 +72,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, order })
   } catch (error) {
     console.error("[v0] Error creating order:", error)
-    return NextResponse.json({ error: "Error creating order", details: error }, { status: 500 })
+    const errorMessage = error instanceof Error ? error.message : "Error desconocido al crear el pedido"
+    return NextResponse.json({ error: errorMessage, details: error }, { status: 500 })
   }
 }

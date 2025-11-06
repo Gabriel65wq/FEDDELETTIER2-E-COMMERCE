@@ -6,6 +6,12 @@ export async function POST(request: Request) {
   try {
     const body = await request.json()
 
+    console.log("[v0] Creating MercadoPago preference with data:", JSON.stringify(body, null, 2))
+
+    if (!body.items || body.items.length === 0) {
+      throw new Error("No hay productos en el pedido")
+    }
+
     const preference = {
       items: body.items.map((item: any) => ({
         title: item.title,
@@ -23,6 +29,8 @@ export async function POST(request: Request) {
       notification_url: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/mercadopago/webhook`,
     }
 
+    console.log("[v0] Sending preference to MercadoPago:", JSON.stringify(preference, null, 2))
+
     const response = await fetch("https://api.mercadopago.com/checkout/preferences", {
       method: "POST",
       headers: {
@@ -33,13 +41,17 @@ export async function POST(request: Request) {
     })
 
     if (!response.ok) {
-      throw new Error("Error creating MercadoPago preference")
+      const errorData = await response.json()
+      console.error("[v0] MercadoPago API error:", errorData)
+      throw new Error(`Error de MercadoPago: ${errorData.message || "Error desconocido"}`)
     }
 
     const data = await response.json()
+    console.log("[v0] MercadoPago preference created successfully:", data)
     return NextResponse.json(data)
   } catch (error) {
     console.error("[v0] Error in create-preference:", error)
-    return NextResponse.json({ error: "Error creating preference" }, { status: 500 })
+    const errorMessage = error instanceof Error ? error.message : "Error desconocido al crear la preferencia de pago"
+    return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }

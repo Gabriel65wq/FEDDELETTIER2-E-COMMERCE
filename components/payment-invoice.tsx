@@ -53,7 +53,6 @@ export function PaymentInvoice({
     try {
       console.log("[v0] Guardando pedido en Google Sheets...")
 
-      // Preparar los productos como string
       const productosString = items
         .map((item) => `${item.product.name} x${item.quantity} ($${item.product.priceUSD})`)
         .join(", ")
@@ -63,20 +62,18 @@ export function PaymentInvoice({
         dni: formData.dni,
         telefono: formData.phone,
         gmail: formData.email,
-        fecha_retiro: deliveryMethod === "retiro" ? pickupDate || "" : "",
-        horario_retiro: deliveryMethod === "retiro" ? pickupTime || "" : "",
-        direccion: deliveryMethod === "cargo" ? formData.address || "" : "",
-        altura: deliveryMethod === "cargo" ? formData.number || "" : "",
-        piso_departamento: deliveryMethod === "cargo" ? formData.floor || "" : "",
-        localidad: deliveryMethod === "cargo" ? formData.locality || "" : "",
-        provincia: deliveryMethod === "cargo" ? formData.province || "" : "",
-        codigo_postal: deliveryMethod === "cargo" ? formData.postal || "" : "",
-        instrucciones_entrega: deliveryMethod === "cargo" ? formData.instructions || "" : "",
         metodo_entrega: deliveryMethod === "retiro" ? "Retiro en Persona" : "Vía Cargo",
         metodo_pago: paymentMethod === "efectivo" ? "Efectivo" : "Mercado Pago",
-        productos: productosString,
         total_usd: totalUSD,
-        total_ars: totalARS,
+        productos: productosString,
+        fecha_retiro: deliveryMethod === "retiro" ? pickupDate || "" : "N/A",
+        horario_retiro: deliveryMethod === "retiro" ? pickupTime || "" : "N/A",
+        direccion: deliveryMethod === "cargo" ? formData.address || "" : "N/A",
+        altura: deliveryMethod === "cargo" ? formData.number || "" : "N/A",
+        localidad: deliveryMethod === "cargo" ? formData.locality || "" : "N/A",
+        provincia: deliveryMethod === "cargo" ? formData.province || "" : "N/A",
+        codigo_postal: deliveryMethod === "cargo" ? formData.postal || "" : "N/A",
+        instrucciones_entrega: deliveryMethod === "cargo" ? formData.instructions || "" : "N/A",
       }
 
       const response = await fetch("/api/guardar-pedido", {

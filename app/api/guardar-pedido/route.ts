@@ -84,34 +84,32 @@ export async function POST(request: Request) {
 
     console.log("[v0] Preparando datos para insertar en Google Sheets...")
 
-    // Preparar los datos en el orden de las columnas de la hoja
+    // Orden: Nombre completo, Dni, Telefono, Gmail, Metodo entrega, Pago, Precio usd, Productos,
+    // Fecha Retiro, Horario Retiro, Direccion, Altura, Localidad, Provincia, Codigo postal, Instrucciones de entrega
     const row = [
       data.nombre_completo,
       data.dni,
       data.telefono,
       data.gmail,
+      data.metodo_entrega || "N/A",
+      data.metodo_pago || "N/A",
+      data.total_usd?.toString() || "0",
+      data.productos || "N/A",
       data.fecha_retiro || "N/A",
       data.horario_retiro || "N/A",
       data.direccion || "N/A",
       data.altura || "N/A",
-      data.piso_departamento || "N/A",
       data.localidad || "N/A",
       data.provincia || "N/A",
       data.codigo_postal || "N/A",
       data.instrucciones_entrega || "N/A",
-      data.metodo_entrega || "N/A",
-      data.metodo_pago || "N/A",
-      data.productos || "N/A",
-      data.total_usd?.toString() || "0",
-      data.total_ars?.toString() || "0",
     ]
 
     console.log("[v0] Insertando fila en Google Sheets...")
 
-    // Insertar la fila en la hoja
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: SHEET_ID,
-      range: `${SHEET_NAME}!A:R`, // Rango que cubre todas las columnas
+      range: `${SHEET_NAME}!A:P`,
       valueInputOption: "USER_ENTERED",
       requestBody: {
         values: [row],

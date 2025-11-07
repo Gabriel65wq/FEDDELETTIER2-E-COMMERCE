@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
@@ -65,10 +64,7 @@ export function CartSheet({ isOpen, onClose, items, onRemoveItem, onClearCart }:
   return (
     <>
       <Sheet open={isOpen && !showCheckout && !showPayment} onOpenChange={onClose}>
-        <SheetContent
-          className="w-full sm:max-w-[450px] bg-white dark:bg-black text-black dark:text-white border-none"
-          hideCloseButton
-        >
+        <SheetContent className="w-full sm:max-w-[450px] bg-white dark:bg-black text-black dark:text-white border-none">
           <style jsx>{`
             @keyframes gradientFlow {
               0%, 100% {
@@ -81,20 +77,9 @@ export function CartSheet({ isOpen, onClose, items, onRemoveItem, onClearCart }:
           `}</style>
 
           <SheetHeader className="border-b-2 border-blue-200/20 dark:border-blue-500/20 pb-4 mb-6">
-            <div className="flex items-center justify-between gap-4">
-              <SheetTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent flex-1 text-center">
-                Carrito de Compras
-              </SheetTitle>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onClose}
-                className="rounded-full hover:bg-red-100 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-all hover:rotate-90 flex-shrink-0"
-                aria-label="Cerrar carrito"
-              >
-                <X className="h-5 w-5" />
-              </Button>
-            </div>
+            <SheetTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent text-center">
+              Carrito de Compras
+            </SheetTitle>
           </SheetHeader>
 
           <div className="flex flex-col h-full">

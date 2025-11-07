@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/com
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import type { Product } from "@/lib/products-data"
 import { CheckoutForm } from "@/components/checkout-form"
+import { PaymentInvoice } from "@/components/payment-invoice"
 
 export interface CartItem {
   product: Product
@@ -23,6 +24,15 @@ interface CartSheetProps {
 
 export function CartSheet({ isOpen, onClose, items, onRemoveItem, onClearCart }: CartSheetProps) {
   const [showCheckout, setShowCheckout] = useState(false)
+  const [showPayment, setShowPayment] = useState(false)
+  const [paymentData, setPaymentData] = useState<{
+    deliveryMethod: "retiro" | "cargo"
+    formData: any
+    pickupDate: string
+    pickupTime: string
+    totalARS: number
+    cryptoRate: number
+  } | null>(null)
 
   const totalUSD = items.reduce((sum, item) => sum + (item.product.priceUSD || 0) * item.quantity, 0)
 
@@ -34,9 +44,27 @@ export function CartSheet({ isOpen, onClose, items, onRemoveItem, onClearCart }:
     setShowCheckout(true)
   }
 
+  const handleContinueToPayment = (data: {
+    deliveryMethod: "retiro" | "cargo"
+    formData: any
+    pickupDate: string
+    pickupTime: string
+    totalARS: number
+    cryptoRate: number
+  }) => {
+    setPaymentData(data)
+    setShowCheckout(false)
+    setShowPayment(true)
+  }
+
+  const handleBackFromPayment = () => {
+    setShowPayment(false)
+    setShowCheckout(true)
+  }
+
   return (
     <>
-      <Sheet open={isOpen && !showCheckout} onOpenChange={onClose}>
+      <Sheet open={isOpen && !showCheckout && !showPayment} onOpenChange={onClose}>
         <SheetContent className="w-full sm:max-w-[450px] bg-white dark:bg-black text-black dark:text-white border-none">
           <style jsx>{`
             @keyframes gradientFlow {
@@ -171,7 +199,30 @@ export function CartSheet({ isOpen, onClose, items, onRemoveItem, onClearCart }:
 
       <Dialog open={showCheckout} onOpenChange={(open) => !open && setShowCheckout(false)}>
         <DialogContent className="max-w-[1600px] w-[95vw] max-h-[95vh] overflow-y-auto bg-white dark:bg-black border-blue-200 dark:border-blue-800">
-          <CheckoutForm items={items} totalUSD={totalUSD} onBack={handleBackToCart} />
+          <CheckoutForm
+            items={items}
+            totalUSD={totalUSD}
+            onBack={handleBackToCart}
+            onContinueToPayment={handleContinueToPayment}
+          />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showPayment} onOpenChange={(open) => !open && setShowPayment(false)}>
+        <DialogContent className="max-w-[1800px] w-[98vw] max-h-[95vh] overflow-y-auto bg-white dark:bg-black border-blue-200 dark:border-blue-800">
+          {paymentData && (
+            <PaymentInvoice
+              items={items}
+              totalUSD={totalUSD}
+              totalARS={paymentData.totalARS}
+              cryptoRate={paymentData.cryptoRate}
+              deliveryMethod={paymentData.deliveryMethod}
+              formData={paymentData.formData}
+              pickupDate={paymentData.pickupDate}
+              pickupTime={paymentData.pickupTime}
+              onBack={handleBackFromPayment}
+            />
+          )}
         </DialogContent>
       </Dialog>
     </>

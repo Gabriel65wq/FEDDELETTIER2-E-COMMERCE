@@ -8,26 +8,21 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
-import { AlertCircle } from "lucide-react"
 import type { CartItem } from "@/components/cart-sheet"
-import { PaymentInvoice } from "@/components/payment-invoice"
 import { useCryptoRate } from "@/lib/crypto-rate-context"
 
 interface CheckoutFormProps {
   items: CartItem[]
   totalUSD: number
   onBack: () => void
+  onContinueToPayment: (data: any) => void
 }
 
-export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
+export function CheckoutForm({ items, totalUSD, onBack, onContinueToPayment }: CheckoutFormProps) {
   const { cryptoRate, isLoading } = useCryptoRate()
   const [deliveryMethod, setDeliveryMethod] = useState<"retiro" | "cargo">("retiro")
   const [pickupDate, setPickupDate] = useState("")
   const [pickupTime, setPickupTime] = useState("")
-  const [showPayment, setShowPayment] = useState(false)
-
-  const [dateError, setDateError] = useState("")
-  const [timeError, setTimeError] = useState("")
   const [formData, setFormData] = useState({
     name: "",
     dni: "",
@@ -44,7 +39,6 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
 
   const validateDate = (date: string) => {
     if (!date) {
-      setDateError("")
       return false
     }
 
@@ -53,41 +47,34 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
     today.setHours(0, 0, 0, 0)
 
     if (selectedDate < today) {
-      setDateError("Debe colocar una fecha correcta (desde hoy en adelante)")
       return false
     }
 
-    setDateError("")
     return true
   }
 
   const validateTime = (time: string) => {
     if (!time) {
-      setTimeError("")
       return false
     }
 
     const [hours] = time.split(":").map(Number)
 
     if (hours < 9 || hours >= 17) {
-      setTimeError("El horario debe ser entre 9 AM y 5 PM")
       return false
     }
 
-    setTimeError("")
     return true
   }
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = e.target.value
     setPickupDate(date)
-    validateDate(date)
   }
 
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const time = e.target.value
     setPickupTime(time)
-    validateTime(time)
   }
 
   const handleContinueToPayment = () => {
@@ -113,26 +100,19 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
       }
     }
 
-    setShowPayment(true)
+    if (onContinueToPayment) {
+      onContinueToPayment({
+        deliveryMethod,
+        formData,
+        pickupDate,
+        pickupTime,
+        totalARS: totalUSD * cryptoRate,
+        cryptoRate,
+      })
+    }
   }
 
   const totalARS = totalUSD * cryptoRate
-
-  if (showPayment) {
-    return (
-      <PaymentInvoice
-        items={items}
-        totalUSD={totalUSD}
-        totalARS={totalARS}
-        cryptoRate={cryptoRate}
-        deliveryMethod={deliveryMethod}
-        formData={formData}
-        pickupDate={pickupDate}
-        pickupTime={pickupTime}
-        onBack={() => setShowPayment(false)}
-      />
-    )
-  }
 
   return (
     <div className="flex flex-col h-full">
@@ -334,22 +314,10 @@ export function CheckoutForm({ items, totalUSD, onBack }: CheckoutFormProps) {
                     onChange={handleDateChange}
                     min={new Date().toISOString().split("T")[0]}
                   />
-                  {dateError && (
-                    <div className="flex items-center gap-2 text-destructive text-sm">
-                      <AlertCircle className="h-4 w-4" />
-                      <span>{dateError}</span>
-                    </div>
-                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="time">Horario (9 AM - 5 PM)</Label>
                   <Input id="time" type="time" min="09:00" max="17:00" value={pickupTime} onChange={handleTimeChange} />
-                  {timeError && (
-                    <div className="flex items-center gap-2 text-destructive text-sm">
-                      <AlertCircle className="h-4 w-4" />
-                      <span>{timeError}</span>
-                    </div>
-                  )}
                 </div>
               </div>
             </div>

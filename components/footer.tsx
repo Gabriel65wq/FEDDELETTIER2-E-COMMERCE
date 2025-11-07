@@ -5,9 +5,9 @@ export function Footer() {
   return (
     <footer className="bg-[#1b2530] text-[#d1d5db] border-t border-[#2e3a47]">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 max-md:text-center">
           {/* Columna 1: FEDELETTIER */}
-          <div className="space-y-4 flex flex-col">
+          <div className="space-y-4 flex flex-col max-md:items-center">
             <h3 className="font-bold text-lg text-blue-600">FEDELETTIER</h3>
             <p className="text-sm text-[#d1d5db] leading-relaxed">
               Importador directo de productos del momento. +1000 Clientes satisfechos.
@@ -35,7 +35,7 @@ export function Footer() {
           </div>
 
           {/* Columna 2: Enlaces Rápidos */}
-          <div className="space-y-4 flex flex-col">
+          <div className="space-y-4 flex flex-col max-md:items-center">
             <h3 className="font-bold text-lg text-blue-600">Enlaces Rápidos</h3>
             <ul className="space-y-2 text-sm">
               <li>
@@ -62,7 +62,7 @@ export function Footer() {
           </div>
 
           {/* Columna 3: Información */}
-          <div className="space-y-4 flex flex-col">
+          <div className="space-y-4 flex flex-col max-md:items-center">
             <h3 className="font-bold text-lg text-blue-600">Información</h3>
             <ul className="space-y-2 text-sm">
               <li>
@@ -89,7 +89,7 @@ export function Footer() {
           </div>
 
           {/* Columna 4: Contacto */}
-          <div className="space-y-4 flex flex-col">
+          <div className="space-y-4 flex flex-col max-md:items-center">
             <h3 className="font-bold text-lg text-blue-600">Contacto</h3>
             <div className="space-y-2 text-sm text-[#d1d5db]">
               <p>+54 9 11 2477 2377</p>
@@ -102,7 +102,7 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Copyright */}
+        {/* Copyright - siempre centrado */}
         <div className="border-t border-black pt-6">
           <p className="text-center text-sm text-[#d1d5db]">© 2025 Fede Lettier. Todos los derechos reservados.</p>
         </div>

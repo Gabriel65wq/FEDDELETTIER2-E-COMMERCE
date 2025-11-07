@@ -24,23 +24,54 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        {/* Logo - izquierda */}
-        <div className="flex items-center">
-          <a href="#inicio" className="text-xl font-bold tracking-tight">
+        {/* Izquierda - Hamburguesa (móvil) y Logo (desktop) */}
+        <div className="flex items-center gap-2">
+          <div className="relative md:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="relative rounded-lg hover:bg-primary/10 transition-all"
+            >
+              {isMenuOpen ? (
+                <X className="h-6 w-6 transition-all duration-300 rotate-90" />
+              ) : (
+                <Menu className="h-6 w-6 transition-all duration-300 rotate-0" />
+              )}
+              <span className="sr-only">Abrir menú</span>
+            </Button>
+
+            {isMenuOpen && (
+              <div className="absolute top-full left-0 mt-2 w-48 bg-background border rounded-lg shadow-lg py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                {menuItems.map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="block px-4 py-2 text-sm font-medium hover:bg-muted transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <a href="#inicio" className="text-xl font-bold tracking-tight hidden md:block">
             FEDELETTIER
           </a>
         </div>
 
-        {/* Centro - Botones de navegación */}
+        {/* Centro - Inicio y Carrito (móvil) | Menú hamburguesa y Carrito (desktop) */}
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" asChild className="hidden md:flex">
+          <Button variant="ghost" size="icon" asChild className="md:hidden">
             <a href="#inicio">
               <Home className="h-5 w-5" />
               <span className="sr-only">Inicio</span>
             </a>
           </Button>
 
-          <div className="relative">
+          <div className="relative hidden md:block">
             <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)} className="relative">
               {isMenuOpen ? (
                 <X className="h-5 w-5 transition-all duration-300 rotate-90" />

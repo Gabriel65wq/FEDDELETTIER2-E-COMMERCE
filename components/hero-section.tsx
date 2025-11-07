@@ -95,14 +95,21 @@ export function HeroSection() {
             retiros al domicilio y envíos por Vía Cargo.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button size="lg" asChild className="w-full sm:w-auto rounded-full shimmer-button blue-button">
+          <div className="flex flex-row gap-3 justify-center items-center max-md:gap-2">
+            <Button
+              size="lg"
+              asChild
+              className="max-md:text-sm max-md:px-4 max-md:py-2 max-md:h-10 rounded-full shimmer-button blue-button"
+            >
               <a href="#productos">Ver Productos</a>
             </Button>
 
             <Dialog>
               <DialogTrigger asChild>
-                <Button size="lg" className="w-full sm:w-auto rounded-full shimmer-button blue-button">
+                <Button
+                  size="lg"
+                  className="max-md:text-sm max-md:px-4 max-md:py-2 max-md:h-10 rounded-full shimmer-button blue-button"
+                >
                   Redes Sociales
                 </Button>
               </DialogTrigger>

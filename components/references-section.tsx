@@ -33,6 +33,17 @@ export function ReferencesSection() {
   const [showGallery, setShowGallery] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
+  useState(() => {
+    if (showGallery) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = "unset"
+    }
+    return () => {
+      document.body.style.overflow = "unset"
+    }
+  })
+
   return (
     <>
       <section id="referencias" className="py-16 md:py-24 relative overflow-hidden">
@@ -163,13 +174,15 @@ export function ReferencesSection() {
           </div>
 
           <div className="max-w-2xl mx-auto text-center mb-12 space-y-2">
-            <p className="text-lg leading-relaxed text-muted-foreground">
+            <p className="text-base md:text-lg leading-relaxed text-muted-foreground">
               ✅ +1000 clientes satisfechos en todo el país
             </p>
-            <p className="text-lg leading-relaxed text-muted-foreground">
+            <p className="text-base md:text-lg leading-relaxed text-muted-foreground">
               📦 Envíos diarios por transporte y retiros coordinados
             </p>
-            <p className="text-lg leading-relaxed text-muted-foreground">💬 Testimonios reales de WhatsApp</p>
+            <p className="text-base md:text-lg leading-relaxed text-muted-foreground">
+              💬 Testimonios reales de WhatsApp
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 max-w-5xl mx-auto">
@@ -201,21 +214,23 @@ export function ReferencesSection() {
 
       {showGallery && (
         <div className="fixed inset-0 bg-white dark:bg-black z-[9999] flex flex-col overflow-hidden">
-          <div className="flex items-center justify-between p-6 border-b border-border">
+          <div className="flex items-center justify-between p-4 md:p-6 border-b border-border">
             <Button
               onClick={() => setShowGallery(false)}
-              className="blue-button shimmer-button hover:scale-105 transition-transform px-6 py-3 rounded-lg font-semibold flex items-center gap-2"
+              className="blue-button shimmer-button hover:scale-105 transition-transform px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold flex items-center gap-2 text-sm md:text-base"
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
               Volver
             </Button>
-            <h2 className="text-2xl font-bold text-foreground">Galería de Referencias</h2>
-            <div className="w-[100px]"></div>
+            <h2 className="text-base md:text-2xl font-bold text-foreground text-center flex-1 max-md:mx-2">
+              Galería de Referencias
+            </h2>
+            <div className="w-[70px] md:w-[100px]"></div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-6">
+          <div className="flex-1 overflow-y-auto p-4 md:p-6">
             <div className="w-full max-w-[1200px] mx-auto">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                 {allReferences.map((image, index) => (
                   <div
                     key={index}

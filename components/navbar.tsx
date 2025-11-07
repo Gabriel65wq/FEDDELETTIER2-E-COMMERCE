@@ -96,12 +96,14 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
               variant="ghost"
               size="icon"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="relative flex items-center justify-center"
+              className="relative flex items-center justify-center h-10 w-10"
             >
               {isMenuOpen ? (
                 <X className="h-5 w-5 transition-all duration-300 rotate-90" />
               ) : (
-                <Menu className="h-5 w-5 transition-all duration-300 rotate-0" />
+                <div className="flex items-center justify-center">
+                  <Menu className="h-5 w-5 transition-all duration-300 rotate-0" />
+                </div>
               )}
               <span className="sr-only">Abrir menú</span>
             </Button>

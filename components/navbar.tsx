@@ -23,7 +23,8 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 relative">
+        {/* MOBILE: Hamburguesa a la izquierda */}
         <div className="flex items-center md:hidden">
           <div className="relative">
             <Button
@@ -57,12 +58,14 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
           </div>
         </div>
 
+        {/* DESKTOP: FEDELETTIER a la izquierda */}
         <div className="hidden md:flex items-center">
           <a href="#inicio" className="text-xl font-bold tracking-tight">
             FEDELETTIER
           </a>
         </div>
 
+        {/* MOBILE: Inicio + Carrito centrados */}
         <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-2 md:hidden">
           <Button variant="ghost" size="icon" asChild>
             <a href="#inicio">
@@ -85,7 +88,7 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
           </Button>
         </div>
 
-        <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 items-center gap-2">
+        <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 items-center gap-4">
           <Button variant="ghost" size="icon" asChild>
             <a href="#inicio">
               <Home className="h-5 w-5" />
@@ -140,6 +143,7 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
           </Button>
         </div>
 
+        {/* Theme button a la derecha - visible en todas las resoluciones */}
         <div className="flex items-center">
           <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
             <Sun className="h-5 w-5 rotate-0 scale-100 transition-all duration-500 dark:-rotate-90 dark:scale-0" />

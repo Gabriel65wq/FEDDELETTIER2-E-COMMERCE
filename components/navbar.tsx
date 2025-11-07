@@ -68,8 +68,7 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Botón Inicio - solo móvil */}
-          <Button variant="ghost" size="icon" asChild className="md:hidden">
+          <Button variant="ghost" size="icon" asChild>
             <a href="#inicio">
               <Home className="h-5 w-5" />
               <span className="sr-only">Inicio</span>

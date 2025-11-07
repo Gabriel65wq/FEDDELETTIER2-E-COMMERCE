@@ -65,7 +65,7 @@ export function CartSheet({ isOpen, onClose, items, onRemoveItem, onClearCart }:
   return (
     <>
       <Sheet open={isOpen && !showCheckout && !showPayment} onOpenChange={onClose}>
-        <SheetContent className="w-full sm:max-w-[450px] bg-white dark:bg-black text-black dark:text-white border-none">
+        <SheetContent className="w-full sm:max-w-[450px] bg-white dark:bg-black text-black dark:text-white border-none [&>button]:hidden">
           <style jsx>{`
             @keyframes gradientFlow {
               0%, 100% {
@@ -77,16 +77,16 @@ export function CartSheet({ isOpen, onClose, items, onRemoveItem, onClearCart }:
             }
           `}</style>
 
-          <SheetHeader className="border-b-2 border-blue-200/20 dark:border-blue-500/20 pb-6 mb-6 bg-gradient-to-r from-blue-50/50 to-cyan-50/50 dark:from-blue-900/10 dark:to-cyan-900/10 -mx-6 px-6 -mt-6 pt-6">
+          <SheetHeader className="border-b-2 border-blue-200/20 dark:border-blue-500/20 pb-4 mb-6 -mx-6 px-6 -mt-6 pt-6">
             <div className="flex items-center justify-between">
-              <SheetTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
+              <SheetTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent flex-1 text-center">
                 Carrito de Compras
               </SheetTitle>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={onClose}
-                className="rounded-full hover:bg-red-100 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-all hover:rotate-90"
+                className="rounded-full hover:bg-red-100 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-all hover:rotate-90 flex-shrink-0"
               >
                 <X className="h-5 w-5" />
               </Button>

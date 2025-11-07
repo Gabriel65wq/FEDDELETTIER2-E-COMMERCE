@@ -65,16 +65,16 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
           <a href="#inicio" className="text-xl font-bold tracking-tight hidden md:block">
             FEDELETTIER
           </a>
-        </div>
 
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" asChild>
+          <Button variant="ghost" size="icon" asChild className="md:flex">
             <a href="#inicio">
               <Home className="h-5 w-5" />
               <span className="sr-only">Inicio</span>
             </a>
           </Button>
+        </div>
 
+        <div className="flex items-center gap-2">
           {/* Hamburguesa desktop */}
           <div className="relative hidden md:block">
             <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)} className="relative">

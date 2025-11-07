@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { X, ChevronLeft } from "lucide-react"
 
@@ -33,16 +33,21 @@ export function ReferencesSection() {
   const [showGallery, setShowGallery] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
-  useState(() => {
-    if (showGallery) {
-      document.body.style.overflow = "hidden"
-    } else {
-      document.body.style.overflow = "unset"
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (showGallery) {
+        document.body.style.overflow = "hidden"
+      } else {
+        document.body.style.overflow = "unset"
+      }
     }
+
     return () => {
-      document.body.style.overflow = "unset"
+      if (typeof window !== "undefined") {
+        document.body.style.overflow = "unset"
+      }
     }
-  })
+  }, [showGallery])
 
   return (
     <>

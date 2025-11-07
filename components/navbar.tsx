@@ -65,12 +65,27 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
           <a href="#inicio" className="text-xl font-bold tracking-tight hidden md:block">
             FEDELETTIER
           </a>
+        </div>
 
-          <Button variant="ghost" size="icon" asChild className="flex">
+        <div className="flex items-center gap-2 absolute left-1/2 transform -translate-x-1/2 md:static md:transform-none">
+          <Button variant="ghost" size="icon" asChild>
             <a href="#inicio">
               <Home className="h-5 w-5" />
               <span className="sr-only">Inicio</span>
             </a>
+          </Button>
+
+          <Button variant="ghost" size="icon" className="relative" onClick={onCartClick}>
+            <ShoppingCart className="h-5 w-5" />
+            {cartItemsCount > 0 && (
+              <Badge
+                variant="destructive"
+                className="absolute -right-1 -top-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
+              >
+                {cartItemsCount}
+              </Badge>
+            )}
+            <span className="sr-only">Carrito</span>
           </Button>
         </div>
 
@@ -102,23 +117,7 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
             )}
           </div>
 
-          {/* Carrito - visible en ambos */}
-          <Button variant="ghost" size="icon" className="relative" onClick={onCartClick}>
-            <ShoppingCart className="h-5 w-5" />
-            {cartItemsCount > 0 && (
-              <Badge
-                variant="destructive"
-                className="absolute -right-1 -top-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
-              >
-                {cartItemsCount}
-              </Badge>
-            )}
-            <span className="sr-only">Carrito</span>
-          </Button>
-        </div>
-
-        {/* Derecha - Theme switch */}
-        <div className="flex items-center">
+          {/* Theme switch */}
           <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
             <Sun className="h-5 w-5 rotate-0 scale-100 transition-all duration-500 dark:-rotate-90 dark:scale-0" />
             <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all duration-500 dark:rotate-0 dark:scale-100" />

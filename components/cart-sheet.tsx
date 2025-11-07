@@ -64,7 +64,7 @@ export function CartSheet({ isOpen, onClose, items, onRemoveItem, onClearCart }:
   return (
     <>
       <Sheet open={isOpen && !showCheckout && !showPayment} onOpenChange={onClose}>
-        <SheetContent className="w-full sm:max-w-[450px] bg-white dark:bg-black text-black dark:text-white border-none [&>button]:hidden">
+        <SheetContent className="w-full sm:max-w-[450px] bg-white dark:bg-black text-black dark:text-white border-none">
           <style jsx>{`
             @keyframes gradientFlow {
               0%, 100% {
@@ -77,7 +77,7 @@ export function CartSheet({ isOpen, onClose, items, onRemoveItem, onClearCart }:
           `}</style>
 
           <SheetHeader className="border-b-2 border-blue-200/20 dark:border-blue-500/20 pb-6 mb-6">
-            <SheetTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent text-center">
+            <SheetTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
               Carrito de Compras
             </SheetTitle>
           </SheetHeader>

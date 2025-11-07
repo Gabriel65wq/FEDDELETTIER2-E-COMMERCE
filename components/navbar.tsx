@@ -92,7 +92,12 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
         <div className="flex items-center gap-2">
           {/* Hamburguesa desktop */}
           <div className="relative hidden md:block">
-            <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)} className="relative">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="relative flex items-center justify-center"
+            >
               {isMenuOpen ? (
                 <X className="h-5 w-5 transition-all duration-300 rotate-90" />
               ) : (

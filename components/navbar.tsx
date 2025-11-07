@@ -65,9 +65,16 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
           <a href="#inicio" className="text-xl font-bold tracking-tight hidden md:block">
             FEDELETTIER
           </a>
+
+          <Button variant="ghost" size="icon" asChild className="hidden md:flex">
+            <a href="#inicio">
+              <Home className="h-5 w-5" />
+              <span className="sr-only">Inicio</span>
+            </a>
+          </Button>
         </div>
 
-        <div className="flex items-center gap-2 absolute left-1/2 transform -translate-x-1/2 md:static md:transform-none">
+        <div className="flex items-center gap-2 absolute left-1/2 transform -translate-x-1/2 md:hidden">
           <Button variant="ghost" size="icon" asChild>
             <a href="#inicio">
               <Home className="h-5 w-5" />

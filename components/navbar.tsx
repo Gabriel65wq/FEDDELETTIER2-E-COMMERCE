@@ -66,7 +66,7 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
             FEDELETTIER
           </a>
 
-          <Button variant="ghost" size="icon" asChild>
+          <Button variant="ghost" size="icon" asChild className="flex">
             <a href="#inicio">
               <Home className="h-5 w-5" />
               <span className="sr-only">Inicio</span>

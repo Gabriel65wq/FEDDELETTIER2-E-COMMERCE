@@ -265,10 +265,8 @@ export function PaymentInvoice({
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Columna derecha: Datos del cliente y método de pago */}
-          <div className="space-y-6">
+            {/* Datos del Cliente */}
             <div className="border border-blue-200 dark:border-blue-800 rounded-lg p-6 space-y-4 bg-white dark:bg-gray-800/50 shadow-lg">
               <h3 className="font-semibold text-xl border-b border-blue-200 dark:border-blue-800 pb-2 text-blue-900 dark:text-blue-100">
                 Datos del Cliente
@@ -332,8 +330,10 @@ export function PaymentInvoice({
                 )}
               </div>
             </div>
+          </div>
 
-            {/* Método de pago */}
+          {/* Columna derecha: Método de Pago */}
+          <div className="space-y-6">
             <div className="border border-blue-200 dark:border-blue-800 rounded-lg p-6 space-y-4 bg-white dark:bg-gray-800/50 shadow-lg">
               <h3 className="font-semibold text-xl border-b border-blue-200 dark:border-blue-800 pb-2 text-blue-900 dark:text-blue-100">
                 Método de Pago

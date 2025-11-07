@@ -223,153 +223,149 @@ export function PaymentInvoice({
       )}
 
       <div className="flex-1 overflow-y-auto">
-        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {/* Columna izquierda: Factura */}
-          <div className="space-y-6">
-            <div className="border border-blue-200 dark:border-blue-800 rounded-lg p-6 space-y-4 bg-white dark:bg-gray-800/50 shadow-lg">
-              <h3 className="font-semibold text-xl border-b border-blue-200 dark:border-blue-800 pb-2 text-blue-900 dark:text-blue-100">
-                Resumen del Pedido
-              </h3>
+        <div className="space-y-6 max-w-4xl mx-auto">
+          {/* 1. Resumen del Pedido - Parte Superior */}
+          <div className="border border-blue-200 dark:border-blue-800 rounded-lg p-6 space-y-4 bg-white dark:bg-gray-800/50 shadow-lg">
+            <h3 className="font-semibold text-xl border-b border-blue-200 dark:border-blue-800 pb-2 text-blue-900 dark:text-blue-100">
+              Resumen del Pedido
+            </h3>
 
-              <div className="space-y-3">
-                <h4 className="font-medium text-sm text-muted-foreground">Productos:</h4>
-                {items.map((item) => (
-                  <div
-                    key={item.product.id}
-                    className="flex justify-between text-sm border-b border-blue-100 dark:border-blue-900/50 pb-2"
-                  >
-                    <span className="flex-1 text-foreground">
-                      {item.product.name} x{item.quantity}
-                    </span>
-                    <span className="font-semibold text-blue-600 dark:text-cyan-400">
-                      ${((item.product.priceUSD || 0) * item.quantity).toFixed(2)} USD
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="border-t border-blue-200 dark:border-blue-800 pt-4 space-y-3 bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-900/50 dark:to-cyan-900/50 p-4 rounded-lg">
-                <div className="flex justify-between font-semibold text-lg">
-                  <span className="text-blue-900 dark:text-blue-100">Total en USD:</span>
-                  <span className="text-blue-600 dark:text-cyan-400">${totalUSD.toFixed(2)} USD</span>
-                </div>
-                <div className="flex justify-between text-sm text-muted-foreground">
-                  <span>Dólar Cripto:</span>
-                  <span>${cryptoRate.toFixed(2)} ARS</span>
-                </div>
-                <div className="flex justify-between font-bold text-xl border-t border-blue-300 dark:border-blue-700 pt-3">
-                  <span className="text-blue-900 dark:text-blue-100">Total en ARS:</span>
-                  <span className="text-blue-600 dark:text-cyan-400">
-                    ${totalARS.toLocaleString("es-AR", { maximumFractionDigits: 0 })} ARS
+            <div className="space-y-3">
+              <h4 className="font-medium text-sm text-muted-foreground">Productos:</h4>
+              {items.map((item) => (
+                <div
+                  key={item.product.id}
+                  className="flex justify-between text-sm border-b border-blue-100 dark:border-blue-900/50 pb-2"
+                >
+                  <span className="flex-1 text-foreground">
+                    {item.product.name} x{item.quantity}
+                  </span>
+                  <span className="font-semibold text-blue-600 dark:text-cyan-400">
+                    ${((item.product.priceUSD || 0) * item.quantity).toFixed(2)} USD
                   </span>
                 </div>
-              </div>
+              ))}
             </div>
 
-            {/* Datos del Cliente */}
-            <div className="border border-blue-200 dark:border-blue-800 rounded-lg p-6 space-y-4 bg-white dark:bg-gray-800/50 shadow-lg">
-              <h3 className="font-semibold text-xl border-b border-blue-200 dark:border-blue-800 pb-2 text-blue-900 dark:text-blue-100">
-                Datos del Cliente
-              </h3>
-
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Nombre:</span>
-                  <span className="font-medium text-foreground">{formData.name}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">DNI:</span>
-                  <span className="font-medium text-foreground">{formData.dni}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Email:</span>
-                  <span className="font-medium text-foreground">{formData.email}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Teléfono:</span>
-                  <span className="font-medium text-foreground">{formData.phone}</span>
-                </div>
+            <div className="border-t border-blue-200 dark:border-blue-800 pt-4 space-y-3 bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-900/50 dark:to-cyan-900/50 p-4 rounded-lg">
+              <div className="flex justify-between font-semibold text-lg">
+                <span className="text-blue-900 dark:text-blue-100">Total en USD:</span>
+                <span className="text-blue-600 dark:text-cyan-400">${totalUSD.toFixed(2)} USD</span>
               </div>
-
-              <div className="border-t border-blue-200 dark:border-blue-800 pt-4 space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Método de Entrega:</span>
-                  <span className="font-medium text-foreground">
-                    {deliveryMethod === "retiro" ? "Retiro en Persona" : "Vía Cargo"}
-                  </span>
-                </div>
-
-                {deliveryMethod === "retiro" && (
-                  <>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Fecha de Retiro:</span>
-                      <span className="font-medium text-foreground">{pickupDate}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Horario:</span>
-                      <span className="font-medium text-foreground">{pickupTime}</span>
-                    </div>
-                  </>
-                )}
-
-                {deliveryMethod === "cargo" && (
-                  <div className="flex flex-col gap-1">
-                    <span className="text-muted-foreground">Dirección de Envío:</span>
-                    <span className="font-medium text-foreground">
-                      {formData.address} {formData.number}
-                      {formData.floor && `, ${formData.floor}`}
-                    </span>
-                    <span className="font-medium text-foreground">
-                      {formData.locality}, {formData.province}
-                    </span>
-                    <span className="font-medium text-foreground">CP: {formData.postal}</span>
-                    {formData.instructions && (
-                      <span className="text-xs text-muted-foreground mt-1">Instrucciones: {formData.instructions}</span>
-                    )}
-                  </div>
-                )}
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>Dólar Cripto:</span>
+                <span>${cryptoRate.toFixed(2)} ARS</span>
+              </div>
+              <div className="flex justify-between font-bold text-xl border-t border-blue-300 dark:border-blue-700 pt-3">
+                <span className="text-blue-900 dark:text-blue-100">Total en ARS:</span>
+                <span className="text-blue-600 dark:text-cyan-400">
+                  ${totalARS.toLocaleString("es-AR", { maximumFractionDigits: 0 })} ARS
+                </span>
               </div>
             </div>
           </div>
 
-          {/* Columna derecha: Método de Pago */}
-          <div className="space-y-6">
-            <div className="border border-blue-200 dark:border-blue-800 rounded-lg p-6 space-y-4 bg-white dark:bg-gray-800/50 shadow-lg">
-              <h3 className="font-semibold text-xl border-b border-blue-200 dark:border-blue-800 pb-2 text-blue-900 dark:text-blue-100">
-                Método de Pago
-              </h3>
+          {/* 2. Datos del Cliente - Parte Media */}
+          <div className="border border-blue-200 dark:border-blue-800 rounded-lg p-6 space-y-4 bg-white dark:bg-gray-800/50 shadow-lg">
+            <h3 className="font-semibold text-xl border-b border-blue-200 dark:border-blue-800 pb-2 text-blue-900 dark:text-blue-100">
+              Datos del Cliente
+            </h3>
 
-              <RadioGroup
-                value={paymentMethod}
-                onValueChange={(value) => setPaymentMethod(value as "efectivo" | "mercadopago")}
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="efectivo" id="efectivo" disabled={deliveryMethod === "cargo"} />
-                  <Label
-                    htmlFor="efectivo"
-                    className={
-                      deliveryMethod === "cargo"
-                        ? "text-muted-foreground cursor-not-allowed"
-                        : "cursor-pointer text-foreground"
-                    }
-                  >
-                    Efectivo {deliveryMethod === "cargo" && "(Solo para retiro en persona)"}
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="mercadopago" id="mercadopago" />
-                  <Label htmlFor="mercadopago" className="cursor-pointer text-foreground">
-                    Mercado Pago (Transferencia)
-                  </Label>
-                </div>
-              </RadioGroup>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Nombre:</span>
+                <span className="font-medium text-foreground">{formData.name}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">DNI:</span>
+                <span className="font-medium text-foreground">{formData.dni}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Email:</span>
+                <span className="font-medium text-foreground">{formData.email}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Teléfono:</span>
+                <span className="font-medium text-foreground">{formData.phone}</span>
+              </div>
+            </div>
+
+            <div className="border-t border-blue-200 dark:border-blue-800 pt-4 space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Método de Entrega:</span>
+                <span className="font-medium text-foreground">
+                  {deliveryMethod === "retiro" ? "Retiro en Persona" : "Vía Cargo"}
+                </span>
+              </div>
+
+              {deliveryMethod === "retiro" && (
+                <>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Fecha de Retiro:</span>
+                    <span className="font-medium text-foreground">{pickupDate}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Horario:</span>
+                    <span className="font-medium text-foreground">{pickupTime}</span>
+                  </div>
+                </>
+              )}
 
               {deliveryMethod === "cargo" && (
-                <p className="text-xs text-muted-foreground bg-muted/50 dark:bg-muted/20 p-3 rounded border border-blue-200 dark:border-blue-800">
-                  Para envíos por Vía Cargo es obligatorio pagar por transferencia.
-                </p>
+                <div className="flex flex-col gap-1">
+                  <span className="text-muted-foreground">Dirección de Envío:</span>
+                  <span className="font-medium text-foreground">
+                    {formData.address} {formData.number}
+                    {formData.floor && `, ${formData.floor}`}
+                  </span>
+                  <span className="font-medium text-foreground">
+                    {formData.locality}, {formData.province}
+                  </span>
+                  <span className="font-medium text-foreground">CP: {formData.postal}</span>
+                  {formData.instructions && (
+                    <span className="text-xs text-muted-foreground mt-1">Instrucciones: {formData.instructions}</span>
+                  )}
+                </div>
               )}
             </div>
+          </div>
+
+          {/* 3. Método de Pago - Parte Inferior */}
+          <div className="border border-blue-200 dark:border-blue-800 rounded-lg p-6 space-y-4 bg-white dark:bg-gray-800/50 shadow-lg">
+            <h3 className="font-semibold text-xl border-b border-blue-200 dark:border-blue-800 pb-2 text-blue-900 dark:text-blue-100">
+              Método de Pago
+            </h3>
+
+            <RadioGroup
+              value={paymentMethod}
+              onValueChange={(value) => setPaymentMethod(value as "efectivo" | "mercadopago")}
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="efectivo" id="efectivo" disabled={deliveryMethod === "cargo"} />
+                <Label
+                  htmlFor="efectivo"
+                  className={
+                    deliveryMethod === "cargo"
+                      ? "text-muted-foreground cursor-not-allowed"
+                      : "cursor-pointer text-foreground"
+                  }
+                >
+                  Efectivo {deliveryMethod === "cargo" && "(Solo para retiro en persona)"}
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="mercadopago" id="mercadopago" />
+                <Label htmlFor="mercadopago" className="cursor-pointer text-foreground">
+                  Mercado Pago (Transferencia)
+                </Label>
+              </div>
+            </RadioGroup>
+
+            {deliveryMethod === "cargo" && (
+              <p className="text-xs text-muted-foreground bg-muted/50 dark:bg-muted/20 p-3 rounded border border-blue-200 dark:border-blue-800">
+                Para envíos por Vía Cargo es obligatorio pagar por transferencia.
+              </p>
+            )}
           </div>
         </div>
       </div>

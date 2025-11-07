@@ -24,19 +24,23 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        {/* Izquierda - Hamburguesa (móvil) y Logo (desktop) */}
         <div className="flex items-center gap-2">
+          {/* Hamburguesa móvil - más moderna */}
           <div className="relative md:hidden">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="relative rounded-lg hover:bg-primary/10 transition-all"
+              className="relative rounded-xl hover:bg-primary/10 transition-all h-10 w-10"
             >
               {isMenuOpen ? (
-                <X className="h-6 w-6 transition-all duration-300 rotate-90" />
+                <X className="h-5 w-5 transition-all duration-300 rotate-90" />
               ) : (
-                <Menu className="h-6 w-6 transition-all duration-300 rotate-0" />
+                <div className="flex flex-col gap-1.5 w-5">
+                  <span className="block h-0.5 w-5 bg-current rounded-full transition-all"></span>
+                  <span className="block h-0.5 w-5 bg-current rounded-full transition-all"></span>
+                  <span className="block h-0.5 w-5 bg-current rounded-full transition-all"></span>
+                </div>
               )}
               <span className="sr-only">Abrir menú</span>
             </Button>
@@ -57,13 +61,14 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
             )}
           </div>
 
+          {/* Logo - solo desktop */}
           <a href="#inicio" className="text-xl font-bold tracking-tight hidden md:block">
             FEDELETTIER
           </a>
         </div>
 
-        {/* Centro - Inicio y Carrito (móvil) | Menú hamburguesa y Carrito (desktop) */}
         <div className="flex items-center gap-2">
+          {/* Botón Inicio - solo móvil */}
           <Button variant="ghost" size="icon" asChild className="md:hidden">
             <a href="#inicio">
               <Home className="h-5 w-5" />
@@ -71,6 +76,7 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
             </a>
           </Button>
 
+          {/* Hamburguesa desktop */}
           <div className="relative hidden md:block">
             <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)} className="relative">
               {isMenuOpen ? (
@@ -97,6 +103,7 @@ export function Navbar({ cartItemsCount, onCartClick }: NavbarProps) {
             )}
           </div>
 
+          {/* Carrito - visible en ambos */}
           <Button variant="ghost" size="icon" className="relative" onClick={onCartClick}>
             <ShoppingCart className="h-5 w-5" />
             {cartItemsCount > 0 && (
